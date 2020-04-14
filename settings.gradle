@@ -1,0 +1,2 @@
+rootProject.name='WithDiary'
+include ':app'
