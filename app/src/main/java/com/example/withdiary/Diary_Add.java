@@ -53,7 +53,7 @@ public class Diary_Add extends AppCompatActivity {
         this.InitializeView();
 
         ImageButton imageButton = findViewById(R.id.Picture);
-        Button uploadbtn = findViewById(R.id.Upload);
+        Button uploadbtn = findViewById(R.id.Diary_upload );
         imageView = findViewById(R.id.imageView);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
