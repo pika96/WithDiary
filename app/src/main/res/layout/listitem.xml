@@ -1,43 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:longClickable="true">
 
+    <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
-        <ImageView
-            android:id="@+id/item_imageView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            android:layout_height="match_parent"
+            android:background="@drawable/frame1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="181dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/item_titletext"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
 
-            <TextView
-                android:id="@+id/item_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
-        </LinearLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/farme2">
+
+                    <ImageView
+                        android:id="@+id/item_imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+
+                        tools:srcCompat="@drawable/test" />
+
+                </FrameLayout>
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/item_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inkkor"
+                                android:text="날짜"
+                                android:textColor="@color/four_gray"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <FrameLayout
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent">
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/item_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inkkor"
+                                android:text="사용자아이디"
+                                android:textAlignment="center"
+                                android:textColor="@color/four_gray"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/item_titletext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/babyGreen"
+                            android:fontFamily="@font/inkkor"
+                            android:text="Title"
+                            android:textAlignment="center"
+                            android:textColor="@color/four_gray"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

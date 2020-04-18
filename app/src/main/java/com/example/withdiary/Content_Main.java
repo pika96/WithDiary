@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class Content_Main extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter(datalist);
         recyclerView.setAdapter(recyclerAdapter);
 
-        Button addbtn = findViewById(R.id.Diary_add);
+        ImageButton addbtn = findViewById(R.id.Diary_add);
         swipeRefreshLayout = findViewById(R.id.swipe_view);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
