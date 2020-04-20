@@ -67,15 +67,15 @@ public class Content_Main extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
         if(requestCode==0){
-            String strTitle= data.getStringExtra( "title" );
-            String strDate= data.getStringExtra( "date" );
+        String strTitle= data.getStringExtra( "title" );
+        String strDate= data.getStringExtra( "date" );
 
 
 // 일기제목 "title" 일기내용"content" 일기 날짜 "date"
 
-            datalist diary = new datalist (strTitle,strDate);
-            recyclerAdapter.additem( diary );
-            recyclerAdapter.notifyDataSetChanged();
+        datalist diary = new datalist (strTitle, "diary Content", strDate);
+        recyclerAdapter.additem( diary );
+        recyclerAdapter.notifyDataSetChanged();
 
         }
     }

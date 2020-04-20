@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Diary_Add extends AppCompatActivity {
+public class Firebase extends AppCompatActivity {
 
 
     private View layout_imgbtn;
@@ -53,7 +53,7 @@ public class Diary_Add extends AppCompatActivity {
         this.InitializeView();
 
         ImageButton imageButton = findViewById(R.id.Picture);
-        Button uploadbtn = findViewById(R.id.Diary_upload );
+        Button uploadbtn = findViewById(R.id.Diary_upload);
         imageView = findViewById(R.id.imageView);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override

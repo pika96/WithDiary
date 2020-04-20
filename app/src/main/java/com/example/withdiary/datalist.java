@@ -9,7 +9,7 @@ public class datalist {
     String diarytext;
     ImageView image;
 
-    public datalist(String titletext, String datetext){
+    public datalist(String titletext, String diarytext, String datetext){
         this.titletext = titletext; //일기 제목
         this.diarytext = diarytext; //일기 내용
         this.datetext = datetext; //일기 날짜
