@@ -71,7 +71,7 @@ public class Content_Add extends AppCompatActivity {
                 //Send to Server
                 if(title.length() > 0){
                     // Group - Groupname - Date - Title
-                    datalist datalist1 = new datalist (title,Content,str_date );
+                    datalist datalist1 = new datalist (str_date,title,Content );
                     database.child(str_date).push( ).setValue(datalist1); //날짜 안에 일기 계속 생성
                     Intent intent= new Intent();
                     setResult(RESULT_OK,intent);
