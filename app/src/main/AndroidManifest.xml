@@ -12,14 +12,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
-        <activity android:name=".Content_Main">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
+
+        <activity android:name=".Content_Main"/>
+
+        <activity android:name=".Intro">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".Content_Add"/>
+
+            <activity android:name=".Content_Read"></activity>
+
+            <activity android:name=".Content_Add"></activity>
+
+
+
+
+
+
     </application>
 
 </manifest>
