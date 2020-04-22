@@ -51,19 +51,15 @@ public class Content_Add extends AppCompatActivity {
         setContentView( R.layout.write_diary);
         Titletext = findViewById( R.id.Diary_title );
         Contenttext = findViewById(R.id.Diary_input);
-
-
-        //DB에 업로드 만들어 놨던 datalist 클래스에 담는 방식으로 바꿈(리스트에 담기 편함)
-        //datalist(String titletext, String diarytext, String datetext) ==> 나중에 사용자 id나 다른것도 추가할 필요가있다.
-        //현재는 제목, 내용, 날짜만 받았다.
+       //DB에 업로드 만들어 놨던 datalist 클래스에 담는 방식으로 바꿈(리스트에 담기 편함)
+        //==> 나중에 사용자 id나 다른것도 추가할 필요가있다.
+        //현재는 날짜, 제목, 내용만 받았다.
         findViewById( R.id.Diary_upload ).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseReference database = firebaseDatabase.getReference("Group/GroupA");
                 String title = Titletext.getText().toString();
                 String Content = Contenttext.getText().toString();
-
-
                 Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
                 String str_date = sdf.format(date);

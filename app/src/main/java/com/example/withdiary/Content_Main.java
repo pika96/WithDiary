@@ -1,5 +1,6 @@
 package com.example.withdiary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,7 +54,9 @@ public class Content_Main extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize( true );
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout( true );//최근 글 부터 보이게 역순 출력
+        layoutManager.setStackFromEnd( true );//최근 글 부터 보이게 역순 출력
         recyclerView.setLayoutManager(layoutManager);
 
 
@@ -71,29 +74,7 @@ public class Content_Main extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
-                /*database = FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-                databaseReference=database.getReference("Group/GroupA/2020-04-22"); //db 테이블과 연동
-                databaseReference.addListenerForSingleValueEvent( new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        //데이터 받아오는 곳
-                        data_list.clear();//기존 배열 리스트 초기화
-                        for (DataSnapshot snapshot : dataSnapshot .getChildren()) {
-                            //반복문으로 데이터 리스트 추출해온다.
-                            datalist datalist = snapshot.getValue( datalist.class );//datalist객체에 값을 담는다.
-                            data_list.add( datalist );//객체를 배열에 넣는다
 
-                        }
-                        recyclerAdapter.notifyDataSetChanged();
-                        }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        //db가져오다 에러났을 때
-                        Log.e("Content_Main", String.valueOf( databaseError.toException() ) );
-                    }
-                } );*/
-                //Toast.makeText(Content_Main.this,"Refresh!",Toast.LENGTH_SHORT).show();
             }
         });
         recyclerAdapter = new RecyclerAdapter(data_list,this);
@@ -122,7 +103,7 @@ public class Content_Main extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                //db가져오다 에러났을 때
+                //db 가져오다 에러났을 때
                 Log.e("Content_Main", String.valueOf( databaseError.toException() ) );
             }
         } );
@@ -132,6 +113,8 @@ public class Content_Main extends AppCompatActivity {
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>{
         private ArrayList<datalist> list_data;
         private Context context;
+
+
 
         public RecyclerAdapter(ArrayList <datalist> list_data, Context context) {
             this.list_data = list_data;
@@ -147,6 +130,7 @@ public class Content_Main extends AppCompatActivity {
                     .inflate(R.layout.listitem, viewGroup ,false);
             ItemViewHolder holder = new ItemViewHolder( view );
             return holder;
+
         }
 
         @Override
@@ -156,7 +140,9 @@ public class Content_Main extends AppCompatActivity {
             holder.titletext.setText(list_data.get(position).getTitletext());
 
 
-        }
+
+
+         }
 
         @Override
         public int getItemCount()
@@ -181,7 +167,20 @@ public class Content_Main extends AppCompatActivity {
                 super(itemView);
                 this.datetext=itemView.findViewById(R.id.item_date);
                 this.titletext=itemView.findViewById(R.id.item_titletext);
+                itemView.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, Content_Read.class);
+                        ((Activity) context).startActivity(intent);
+
+
+
+                        //Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
+                        //화면 전환 기능
+                    }
+                } );
 
                 //img=itemView.findViewById(R.id.item_imageView);
             }
