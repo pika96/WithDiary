@@ -7,14 +7,16 @@ public class datalist {
     String datetext;
     String idtext;
     String diarytext;
-    ImageView image;
+    //ImageView image;
 
-    public datalist(String titletext, String diarytext, String datetext){
+    public  datalist(){}
+
+    public datalist(String datetext, String titletext,String diarytext){
+        this.datetext = datetext; //일기 날짜
         this.titletext = titletext; //일기 제목
         this.diarytext = diarytext; //일기 내용
-        this.datetext = datetext; //일기 날짜
         this.idtext= idtext;//사용자 아이디
-        this.image = image;//사진
+        //this.image = image;//사진
     }
 
     //Alt+insert를 누르면 get/set 자동으로 생성된다

@@ -39,12 +39,12 @@ public class Content_Add extends AppCompatActivity {
     //------------- UI -----------------------------
     EditText Titletext;
     EditText Contenttext;
-    ImageView imageView;
+    //ImageView imageView;
 
 
-    datalist temp_datalist;
-    List<datalist> datalists = new ArrayList<>();
-    //일단 제목과 날짜만 리스트뷰에 넣어줄꺼라서 내용부분은 아직 손을 안댔다.
+    //datalist temp_datalist;
+    //List<datalist> datalists = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -53,12 +53,16 @@ public class Content_Add extends AppCompatActivity {
         Contenttext = findViewById(R.id.Diary_input);
 
 
-
+        //DB에 업로드 만들어 놨던 datalist 클래스에 담는 방식으로 바꿈(리스트에 담기 편함)
+        //datalist(String titletext, String diarytext, String datetext) ==> 나중에 사용자 id나 다른것도 추가할 필요가있다.
+        //현재는 제목, 내용, 날짜만 받았다.
         findViewById( R.id.Diary_upload ).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseReference database = firebaseDatabase.getReference("Group/GroupA");
                 String title = Titletext.getText().toString();
                 String Content = Contenttext.getText().toString();
+
 
                 Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
@@ -67,25 +71,22 @@ public class Content_Add extends AppCompatActivity {
                 //Send to Server
                 if(title.length() > 0){
                     // Group - Groupname - Date - Title
-                    databaseReference.child(str_date).child(title).setValue(Content);
-                }
-                //Send to Content_Main
-                if (title.length() > 0) {
-
-                    Intent intent = new Intent();
-                    intent.putExtra( "title", title );// 키값으로 데이터 넣어줌
-                    intent.putExtra( "date", str_date );
-                    setResult( RESULT_OK, intent);
+                    datalist datalist1 = new datalist (title,Content,str_date );
+                    database.child(str_date).push( ).setValue(datalist1); //날짜 안에 일기 계속 생성
+                    Intent intent= new Intent();
+                    setResult(RESULT_OK,intent);
                     finish();
                 }
+
             }
+
         } );
 
-        get_Diary();
+       // get_Diary();
 
     }
 
-    public void get_Diary(){
+    /*public void get_Diary(){
         // Read DB
         DatabaseReference dataR = firebaseDatabase.getReference("Group/GroupA/2020-04-21");
 
@@ -107,6 +108,6 @@ public class Content_Add extends AppCompatActivity {
                 }
             });
 
-    }
+    }*/
 
 }
