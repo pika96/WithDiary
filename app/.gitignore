@@ -202,4 +202,4 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-!/src/main/java/com/example/withdiary/Content_Main.java
+!/src/main/java/com/example/withdiary/Main_Screen.java

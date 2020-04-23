@@ -16,7 +16,7 @@
 
 
 
-        <activity android:name=".Content_Main"/>
+        <activity android:name=".Main_Screen"/>
 
         <activity android:name=".Intro">
         <intent-filter>
@@ -26,9 +26,10 @@
         </intent-filter>
         </activity>
 
-            <activity android:name=".Content_Read"></activity>
+            <activity android:name=".Select_Diary"></activity>
 
-            <activity android:name=".Content_Add"></activity>
+            <activity android:name=".DB"></activity>
+            <activity android:name=".Write_Diary"></activity>
 
 
 
