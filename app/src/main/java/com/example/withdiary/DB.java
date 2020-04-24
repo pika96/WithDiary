@@ -71,23 +71,27 @@ public class DB extends AppCompatActivity {
             //DB download
             case Main_Screen_CODE:
 
-                DBPath = "Group/GroupA/2020-04-22";
+                DBPath = "Group/GroupA/2020-04-22/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.d("test","0");
                         data_list.clear();
+
                         for (DataSnapshot snapshot : dataSnapshot .getChildren()) {
 
                             datalist datalist = snapshot.getValue( datalist.class );
                             data_list.add( datalist );
 
                         }
-                        Log.d("test","Asdfa");
+
                         Intent send_intent = new Intent();
                         send_intent.putExtra("data", data_list);
                         setResult(RESULT_OK, send_intent);
+                        finish();
+
+
                     }
 
                     @Override
@@ -99,7 +103,7 @@ public class DB extends AppCompatActivity {
 
         }
 
-        finish();
+
         //setContentView( R.layout.write_diary);
         //Titletext = findViewById( R.id.Diary_title );
         //Diarytext = findViewById(R.id.Diary_input);

@@ -56,6 +56,9 @@ public class Main_Screen extends AppCompatActivity {
         layoutManager.setReverseLayout( true );//최근 글 부터 보이게 역순 출력
         layoutManager.setStackFromEnd( true );//최근 글 부터 보이게 역순 출력
         recyclerView.setLayoutManager(layoutManager);
+        recyclerAdapter = new RecyclerAdapter(data_list,this);
+        recyclerView.setAdapter(recyclerAdapter);
+
 
 
 
@@ -65,19 +68,22 @@ public class Main_Screen extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(Main_Screen.this, Write_Diary.class );
                 startActivityForResult( intent ,0);
+
             }
         });
 
         swipeRefreshLayout=findViewById( R.id.swipe );
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
 
+
+
             }
         });
-        recyclerAdapter = new RecyclerAdapter(data_list,this);
-        recyclerView.setAdapter(recyclerAdapter);
+
 
     }
 
@@ -92,11 +98,16 @@ public class Main_Screen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        if(requestCode == 0 & resultCode == RESULT_OK){
-            data_list = (ArrayList<datalist>) data.getSerializableExtra("data");
+        if (resultCode == RESULT_OK) {
+            if (data != null) {
+                Log.d( "test", "12345" );
+                data_list = data.getParcelableArrayListExtra( "data" );
+            }
             recyclerAdapter.notifyDataSetChanged();
-        }
 
+            Log.d( "test", "12222" );
+        }
+    }
 //        database = FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
 //        databaseReference=database.getReference("Group/GroupA/2020-04-22"); //db 테이블과 연동
 //        databaseReference.addListenerForSingleValueEvent( new ValueEventListener() {
@@ -120,7 +131,7 @@ public class Main_Screen extends AppCompatActivity {
 //            }
 //        } );
 
-        }
+
     }
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>{
         private ArrayList<datalist> list_data;
@@ -131,6 +142,7 @@ public class Main_Screen extends AppCompatActivity {
         public RecyclerAdapter(ArrayList <datalist> list_data, Context context) {
             this.list_data = list_data;
             this.context = context;
+
         }
 
 
@@ -142,6 +154,8 @@ public class Main_Screen extends AppCompatActivity {
                     .inflate(R.layout.listitem, viewGroup ,false);
             ItemViewHolder holder = new ItemViewHolder( view );
             return holder;
+
+
 
         }
 
