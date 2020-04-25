@@ -16,12 +16,21 @@ public class datalist implements Parcelable {
     public datalist() {
     }
 
+
+
     public datalist(String datetext, String titletext, String diarytext) {
         this.datetext = datetext; //일기 날짜
         this.titletext = titletext; //일기 제목
         this.diarytext = diarytext; //일기 내용
         this.idtext = idtext;//사용자 아이디
         //this.image = image;//사진
+    }
+
+    protected datalist(Parcel in) {
+        this.datetext=in.readString();
+        this.titletext=in.readString();
+        this.diarytext=in.readString();
+        this.idtext=in.readString();
     }
 
     //Alt+insert를 누르면 get/set 자동으로 생성된다
@@ -66,11 +75,11 @@ public class datalist implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString( datetext );
+        parcel.writeString(this.datetext);
+        parcel.writeString(this.titletext );
+        parcel.writeString(this.diarytext );
+        parcel.writeString(this.idtext);
 
-        parcel.writeString( titletext );
-        parcel.writeString( diarytext );
-        parcel.createBinderArrayList();
 
 
     }
@@ -79,7 +88,7 @@ public class datalist implements Parcelable {
 
         @Override
         public datalist createFromParcel(Parcel in) {
-            return new datalist();
+            return new datalist(in);
         }
 
         @Override

@@ -98,10 +98,10 @@ public class Main_Screen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        if (resultCode == RESULT_OK) {
-            if (data != null) {
+        if (resultCode == 11) {
+            if (data.getExtras() != null) {
                 Log.d( "test", "12345" );
-                data_list = data.getParcelableArrayListExtra( "data" );
+                data_list = data.getExtras().getParcelableArrayList( "data" );
             }
             recyclerAdapter.notifyDataSetChanged();
 

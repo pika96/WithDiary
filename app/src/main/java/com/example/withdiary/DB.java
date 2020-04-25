@@ -49,7 +49,7 @@ public class DB extends AppCompatActivity {
 
         data_list = new ArrayList<>();
 
-        Intent get_intent = getIntent();
+        final Intent get_intent = getIntent();
         int CODE = get_intent.getExtras().getInt("CODE");
         String DBPath;
 
@@ -80,15 +80,16 @@ public class DB extends AppCompatActivity {
                         data_list.clear();
 
                         for (DataSnapshot snapshot : dataSnapshot .getChildren()) {
-
                             datalist datalist = snapshot.getValue( datalist.class );
                             data_list.add( datalist );
 
                         }
 
                         Intent send_intent = new Intent();
-                        send_intent.putExtra("data", data_list);
-                        setResult(RESULT_OK, send_intent);
+                        Bundle bundle = new Bundle(  );
+                        bundle.putParcelableArrayList("data", data_list);
+                        send_intent.putExtras(bundle);
+                        setResult(11, send_intent);
                         finish();
 
 
