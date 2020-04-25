@@ -79,8 +79,6 @@ public class Main_Screen extends AppCompatActivity {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
 
-
-
             }
         });
 
@@ -91,21 +89,21 @@ public class Main_Screen extends AppCompatActivity {
         Intent Access_DB = new Intent(Main_Screen.this, DB.class);
         Access_DB.putExtra("CODE",Main_Screen_CODE);
         //+ Date recv
-        startActivityForResult(Access_DB,0);
+        startActivityForResult(Access_DB,10);
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        if (resultCode == 11) {
-            if (data.getExtras() != null) {
-                Log.d( "test", "12345" );
-                data_list = data.getExtras().getParcelableArrayList( "data" );
+        if (requestCode == 10) {
+            if(resultCode == RESULT_OK) {
+                if (data.getExtras() != null) {
+                    Log.d("test", "12345");
+                    data_list = data.getExtras().getParcelableArrayList("data");
+                }
+                recyclerAdapter.notifyDataSetChanged();
             }
-            recyclerAdapter.notifyDataSetChanged();
-
-            Log.d( "test", "12222" );
         }
     }
 //        database = FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동

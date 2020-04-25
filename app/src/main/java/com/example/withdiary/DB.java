@@ -45,7 +45,7 @@ public class DB extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
+        super.onCreate(savedInstanceState);
 
         data_list = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class DB extends AppCompatActivity {
         int CODE = get_intent.getExtras().getInt("CODE");
         String DBPath;
 
-        switch (CODE){
+        switch (CODE) {
             //DB upload
             case Write_Diary_CODE:
 
@@ -76,23 +76,20 @@ public class DB extends AppCompatActivity {
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.d("test","0");
+                        Log.d("test", "0");
                         data_list.clear();
 
-                        for (DataSnapshot snapshot : dataSnapshot .getChildren()) {
-                            datalist datalist = snapshot.getValue( datalist.class );
-                            data_list.add( datalist );
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            datalist datalist = snapshot.getValue(datalist.class);
+                            data_list.add(datalist);
 
                         }
 
                         Intent send_intent = new Intent();
-                        Bundle bundle = new Bundle(  );
-                        bundle.putParcelableArrayList("data", data_list);
-                        send_intent.putExtras(bundle);
-                        setResult(11, send_intent);
-                        finish();
-
-
+                        Bundle bundle = new Bundle();
+                        //bundle.putParcelableArrayList("data", data_list);
+                        send_intent.putExtra("code", "QQQQ");
+                        setResult(RESULT_OK, send_intent);
                     }
 
                     @Override
@@ -100,11 +97,11 @@ public class DB extends AppCompatActivity {
 
                     }
                 });
-
-
         }
 
-
+        finish();
+    }
+}
         //setContentView( R.layout.write_diary);
         //Titletext = findViewById( R.id.Diary_title );
         //Diarytext = findViewById(R.id.Diary_input);
@@ -137,7 +134,7 @@ public class DB extends AppCompatActivity {
 
        // get_Diary();
 
-    }
+
 
     /*public void get_Diary(){
         // Read DB
@@ -163,4 +160,4 @@ public class DB extends AppCompatActivity {
 
     }*/
 
-}
+
