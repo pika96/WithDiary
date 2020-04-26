@@ -1,21 +1,32 @@
 package com.example.withdiary;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 //Receive Content & upload Server
 
@@ -42,6 +53,8 @@ public class DB extends AppCompatActivity {
     //List<datalist> datalists = new ArrayList<>();
 
     ArrayList<datalist> data_list;
+    private Uri filePath;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +73,15 @@ public class DB extends AppCompatActivity {
                 String Date = get_intent.getExtras().getString("keyDate");
                 String Title = get_intent.getExtras().getString("keyTitle");
                 String Diary = get_intent.getExtras().getString("keyDiary");
+                String strUri = get_intent.getExtras().getString("keyPath");
+                filePath = Uri.parse(strUri);
 
                 datalist tmp_datalist = new datalist(Date, Title, Diary);
 
                 DBPath = "Group/GroupA/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.child(Date).push().setValue(tmp_datalist);
+                uploadFile();
                 finish();
                 break;
 
@@ -97,91 +113,64 @@ public class DB extends AppCompatActivity {
 
                     }
                 });
-                /*databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        data_list.clear();
-
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            datalist datalist = snapshot.getValue(datalist.class);
-                            data_list.add(datalist);
-
-                        }
-
-                        Intent send_intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList("data", data_list);
-                        send_intent.putExtras(bundle);
-                        setResult(11, send_intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });*/
                 break;
         }
 
     }
+    private void uploadFile() {
+
+        if (filePath != null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("업로드중...");
+            progressDialog.show();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
+            Date now = new Date();
+            String filename = formatter.format(now) + ".png";
+
+            StorageReference storageReference = firebaseStorage
+                    .getReferenceFromUrl("gs://withdiary-973ac.appspot.com").child("image/" + filename);
+
+
+            storageReference.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+
+                            Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
+                        }
+                    });
+        } else {
+            Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        if(progressDialog != null){
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+        }
+    }
 }
-        //setContentView( R.layout.write_diary);
-        //Titletext = findViewById( R.id.Diary_title );
-        //Diarytext = findViewById(R.id.Diary_input);
-       //DB에 업로드 만들어 놨던 datalist 클래스에 담는 방식으로 바꿈(리스트에 담기 편함)
-        //==> 나중에 사용자 id나 다른것도 추가할 필요가있다.
-        //현재는 날짜, 제목, 내용만 받았다.
-//        findViewById( R.id.Diary_upload ).setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DatabaseReference database = firebaseDatabase.getReference("Group/GroupA");
-//                String title = Titletext.getText().toString();
-//                String Diary = Diarytext.getText().toString();
-//                Date date = new Date();
-//                SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
-//                String str_date = sdf.format(date);
-//
-//                //Send to Server
-//                if(title.length() > 0){
-//                    // Group - Groupname - Date - Title
-//                    datalist datalist1 = new datalist (str_date,title,Diary );
-//                    database.child(str_date).push( ).setValue(datalist1); //날짜 안에 일기 계속 생성
-//                    Intent intent= new Intent();
-//                    setResult(RESULT_OK,intent);
-//                    finish();
-//                }
-//
-//            }
-//
-//        } );
-
-       // get_Diary();
-
-
-
-    /*public void get_Diary(){
-        // Read DB
-        DatabaseReference dataR = firebaseDatabase.getReference("Group/GroupA/2020-04-21");
-
-            dataR.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot diaryData : dataSnapshot.getChildren()){
-                        Log.d("test",diaryData.getKey());
-                        datalists.add(new datalist(diaryData.getKey(), diaryData.getValue().toString(), "2020-04-21"));
-                    }
-                    temp_datalist = datalists.get(0);
-                    Log.d("test", temp_datalist.diarytext);
-                    Log.d("test", temp_datalist.titletext);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-    }*/
-
-
