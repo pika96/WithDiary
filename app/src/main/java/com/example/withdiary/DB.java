@@ -66,17 +66,40 @@ public class DB extends AppCompatActivity {
                 DBPath = "Group/GroupA/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.child(Date).push().setValue(tmp_datalist);
+                finish();
                 break;
 
             //DB download
             case Main_Screen_CODE:
 
-                DBPath = "Group/GroupA/2020-04-22/";
+                DBPath = "Group/GroupA/2020-04-26/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.d("test", "0");
+                        data_list.clear();
+
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            datalist datalist = snapshot.getValue(datalist.class);
+                            data_list.add(datalist);
+                        }
+
+                        Intent send_intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("data", data_list);
+                        send_intent.putExtras(bundle);
+                        setResult(11, send_intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                /*databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         data_list.clear();
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -87,19 +110,20 @@ public class DB extends AppCompatActivity {
 
                         Intent send_intent = new Intent();
                         Bundle bundle = new Bundle();
-                        //bundle.putParcelableArrayList("data", data_list);
-                        send_intent.putExtra("code", "QQQQ");
-                        setResult(RESULT_OK, send_intent);
+                        bundle.putParcelableArrayList("data", data_list);
+                        send_intent.putExtras(bundle);
+                        setResult(11, send_intent);
+                        finish();
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                });*/
+                break;
         }
 
-        finish();
     }
 }
         //setContentView( R.layout.write_diary);

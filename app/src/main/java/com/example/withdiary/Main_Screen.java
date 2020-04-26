@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,20 +48,10 @@ public class Main_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
-        get_DB();
         data_list = new ArrayList<>();
-
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize( true );
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout( true );//최근 글 부터 보이게 역순 출력
-        layoutManager.setStackFromEnd( true );//최근 글 부터 보이게 역순 출력
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerAdapter = new RecyclerAdapter(data_list,this);
-        recyclerView.setAdapter(recyclerAdapter);
 
-
-
+        get_DB();
 
         //Write Diary
         ImageButton addbtn = findViewById(R.id.Diary_add);
@@ -78,13 +69,23 @@ public class Main_Screen extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
-
+                get_DB();
             }
         });
 
 
     }
 
+    public void printscreen(){
+        recyclerView.setHasFixedSize( true );
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout( true );//최근 글 부터 보이게 역순 출력
+        layoutManager.setStackFromEnd( true );//최근 글 부터 보이게 역순 출력
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerAdapter = new RecyclerAdapter(data_list,this);
+        recyclerView.setAdapter(recyclerAdapter);
+        recyclerAdapter.notifyDataSetChanged();
+    }
     public void get_DB(){
         Intent Access_DB = new Intent(Main_Screen.this, DB.class);
         Access_DB.putExtra("CODE",Main_Screen_CODE);
@@ -97,12 +98,11 @@ public class Main_Screen extends AppCompatActivity {
         super.onActivityResult( requestCode, resultCode, data );
 
         if (requestCode == 10) {
-            if(resultCode == RESULT_OK) {
+            if(resultCode == 11) {
                 if (data.getExtras() != null) {
-                    Log.d("test", "12345");
                     data_list = data.getExtras().getParcelableArrayList("data");
                 }
-                recyclerAdapter.notifyDataSetChanged();
+                printscreen();
             }
         }
     }

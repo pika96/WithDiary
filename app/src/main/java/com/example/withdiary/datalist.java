@@ -16,8 +16,6 @@ public class datalist implements Parcelable {
     public datalist() {
     }
 
-
-
     public datalist(String datetext, String titletext, String diarytext) {
         this.datetext = datetext; //일기 날짜
         this.titletext = titletext; //일기 제목
@@ -30,7 +28,7 @@ public class datalist implements Parcelable {
         this.datetext=in.readString();
         this.titletext=in.readString();
         this.diarytext=in.readString();
-        this.idtext=in.readString();
+        //this.idtext=in.readString();
     }
 
     //Alt+insert를 누르면 get/set 자동으로 생성된다
@@ -78,7 +76,7 @@ public class datalist implements Parcelable {
         parcel.writeString(this.datetext);
         parcel.writeString(this.titletext );
         parcel.writeString(this.diarytext );
-        parcel.writeString(this.idtext);
+        //parcel.writeString(this.idtext);
 
 
 
