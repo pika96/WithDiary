@@ -1,6 +1,7 @@
 package com.example.withdiary;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -33,6 +34,10 @@ public class Write_Diary extends AppCompatActivity {
     private Uri filePath;
     private ImageView imageView;
     public static final int REQUESTCODE = 0;
+    private static final int PICK_FROM_ALBUM = 1;
+    private static final int CROP_FROM_CAMERA = 2;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +45,32 @@ public class Write_Diary extends AppCompatActivity {
         final EditText Titletext = findViewById(R.id.Diary_title);
         final EditText Diarytext = findViewById(R.id.Diary_input);
 
-        ImageButton imageButton = findViewById(R.id.Picture);
+        //ImageButton imageButton = findViewById(R.id.Picture);
+
         imageView = findViewById(R.id.imageView);
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+                public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
+                //startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
+                intent.putExtra("crop","true");
+                intent.putExtra("aspectX",0);
+                intent.putExtra("aspectY",200);
+                intent.putExtra("outputY",150);
+                intent.putExtra("outputX",150);
+
+                try{
+                    intent.putExtra( "return-data",true );
+                    startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
+                }catch(ActivityNotFoundException e) {
+
+                }
+
+
+
             }
         });
 
@@ -93,6 +114,9 @@ public class Write_Diary extends AppCompatActivity {
             } catch (IOException e){
                 e.printStackTrace();
             }
+
+
+
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,6 +160,7 @@ public class Main_Screen extends AppCompatActivity {
             //datalist datalist = list_data.get(i);
             holder.datetext.setText(list_data.get(position).getDatetext());
             holder.titletext.setText(list_data.get(position).getTitletext());
+            holder.diarytext.setText( list_data.get( position ).getDiarytext() );
 
 
 
@@ -182,19 +184,34 @@ public class Main_Screen extends AppCompatActivity {
         class ItemViewHolder extends RecyclerView.ViewHolder{
              TextView datetext;
              TextView titletext;
+             TextView diarytext;
 
             public ItemViewHolder(@NonNull View itemView){
 
                 super(itemView);
                 this.datetext=itemView.findViewById(R.id.item_date);
                 this.titletext=itemView.findViewById(R.id.item_titletext);
+                this.diarytext=itemView.findViewById( R.id.item_content);
+
                 itemView.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         Context context = view.getContext();
                         Intent intent = new Intent(context, Select_Diary.class);
+                        String date = datetext.getText().toString();
+                        String title = titletext.getText().toString();
+                        String diary = diarytext.getText().toString();
+                        intent.putExtra("date", date );
+                        intent.putExtra("title",  title);
+                        intent.putExtra( "diary",diary );
+
+
+
                         ((Activity) context).startActivity(intent);
+
+
+
 
 
 

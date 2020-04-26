@@ -36,22 +36,8 @@
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/common_google_signin_btn_icon_light_normal_background" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/L_imgbtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/Picture"
-                        android:layout_width="match_parent"
-                        android:layout_height="346dp"
-
-                        app:srcCompat="@drawable/ic_launcher_foreground" />
+                        android:layout_height="250dp"
+                        app:srcCompat="@drawable/selectphoto" />
                 </LinearLayout>
 
             </FrameLayout>

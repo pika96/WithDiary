@@ -40,7 +40,7 @@ public class Firebase extends AppCompatActivity {
 
 
     public void InitializeView(){
-        layout_imgbtn = findViewById(R.id.L_imgbtn);
+        //layout_imgbtn = findViewById(R.id.L_imgbtn);
         layout_image = findViewById(R.id.L_image);
         layout_image.setVisibility(View.INVISIBLE);
     }
@@ -52,10 +52,10 @@ public class Firebase extends AppCompatActivity {
 
         this.InitializeView();
 
-        ImageButton imageButton = findViewById(R.id.Picture);
+        //ImageButton imageButton = findViewById(R.id.Picture);
         Button uploadbtn = findViewById(R.id.Diary_upload);
         imageView = findViewById(R.id.imageView);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
