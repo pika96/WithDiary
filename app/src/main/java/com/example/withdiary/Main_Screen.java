@@ -3,18 +3,24 @@ package com.example.withdiary;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,10 +39,6 @@ public class Main_Screen extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-    RecyclerView.LayoutManager layoutManager;
-
-    FirebaseDatabase database;
-    DatabaseReference databaseReference;
 
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -44,6 +46,20 @@ public class Main_Screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+
+        /*final ImageView testimage = findViewById(R.id.test_image);
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if(task.isSuccessful()){
+                    Glide.with(Main_Screen.this)
+                            .load(task.getResult())
+                            .into(testimage);
+                } else{
+                    //Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });*/
 
         data_list = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
@@ -59,6 +75,8 @@ public class Main_Screen extends AppCompatActivity {
 
             }
         });
+
+
 
         swipeRefreshLayout=findViewById( R.id.swipe );
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -84,6 +102,7 @@ public class Main_Screen extends AppCompatActivity {
         recyclerAdapter.notifyDataSetChanged();
     }
 
+
     public void get_DB(){
         Intent Access_DB = new Intent(Main_Screen.this, DB.class);
         Access_DB.putExtra("CODE",Main_Screen_CODE);
@@ -104,28 +123,6 @@ public class Main_Screen extends AppCompatActivity {
             }
         }
     }
-//        database = FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-//        databaseReference=database.getReference("Group/GroupA/2020-04-22"); //db 테이블과 연동
-//        databaseReference.addListenerForSingleValueEvent( new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                //데이터 받아오는 곳
-//                data_list.clear();//기존 배열 리스트 초기화
-//                for (DataSnapshot snapshot : dataSnapshot .getChildren()) {
-//                    //반복문으로 데이터 리스트 추출해온다.
-//                    datalist datalist = snapshot.getValue( datalist.class );//datalist객체에 값을 담는다.
-//                    data_list.add( datalist );//객체를 배열에 넣는다
-//
-//                }
-//                recyclerAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                //db 가져오다 에러났을 때
-//                Log.e("Content_Main", String.valueOf( databaseError.toException() ) );
-//            }
-//        } );
 
 
     }
@@ -133,6 +130,7 @@ public class Main_Screen extends AppCompatActivity {
         private ArrayList<datalist> list_data;
         private Context context;
 
+        private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
 
         public RecyclerAdapter(ArrayList <datalist> list_data, Context context) {
@@ -156,14 +154,29 @@ public class Main_Screen extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ItemViewHolder holder, int position){
+        public void onBindViewHolder(@NonNull final ItemViewHolder holder, int position){
             //datalist datalist = list_data.get(i);
             holder.datetext.setText(list_data.get(position).getDatetext());
             holder.titletext.setText(list_data.get(position).getTitletext());
             holder.diarytext.setText( list_data.get( position ).getDiarytext() );
+            holder.imagepath = list_data.get(position).getImagepath();
 
+            Log.d("path",holder.imagepath);
 
+            StorageReference storageReference = firebaseStorage.getReference().child(holder.imagepath);
 
+            storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Glide.with(context)
+                                .load(task.getResult())
+                                .into(holder.imageview);
+                    }else{
+                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
          }
 
@@ -186,13 +199,18 @@ public class Main_Screen extends AppCompatActivity {
              TextView titletext;
              TextView diarytext;
 
+             String imagepath;
+             ImageView imageview;
+
             public ItemViewHolder(@NonNull View itemView){
 
                 super(itemView);
                 this.datetext=itemView.findViewById(R.id.item_date);
                 this.titletext=itemView.findViewById(R.id.item_titletext);
                 this.diarytext=itemView.findViewById( R.id.item_content);
+                this.imageview=itemView.findViewById(R.id.item_imageView);
 
+                //Select Diary
                 itemView.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -202,9 +220,13 @@ public class Main_Screen extends AppCompatActivity {
                         String date = datetext.getText().toString();
                         String title = titletext.getText().toString();
                         String diary = diarytext.getText().toString();
+
+                        String imagepath = "GroupA/" + date + "/" + title + ".png";
+
                         intent.putExtra("date", date );
-                        intent.putExtra("title",  title);
-                        intent.putExtra( "diary",diary );
+                        intent.putExtra("title", title);
+                        intent.putExtra( "diary", diary );
+                        intent.putExtra("imagepath", imagepath);
 
 
 

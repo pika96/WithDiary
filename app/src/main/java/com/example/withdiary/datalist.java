@@ -11,23 +11,24 @@ public class datalist implements Parcelable {
     String datetext;
     String idtext;
     String diarytext;
-    //ImageView image;
+    String imagepath;
 
     public datalist() {
     }
 
-    public datalist(String datetext, String titletext, String diarytext) {
+    public datalist(String datetext, String titletext, String diarytext, String imagepath) {
         this.datetext = datetext; //일기 날짜
         this.titletext = titletext; //일기 제목
         this.diarytext = diarytext; //일기 내용
         this.idtext = idtext;//사용자 아이디
-        //this.image = image;//사진
+        this.imagepath = imagepath;//사진
     }
 
     protected datalist(Parcel in) {
         this.datetext=in.readString();
         this.titletext=in.readString();
         this.diarytext=in.readString();
+        this.imagepath=in.readString();
         //this.idtext=in.readString();
     }
 
@@ -45,6 +46,8 @@ public class datalist implements Parcelable {
         return diarytext;
     }
 
+    public String getImagepath() { return imagepath; }
+
     public String getIdtext() {
         return idtext;
     }
@@ -61,6 +64,8 @@ public class datalist implements Parcelable {
         this.diarytext = diarytext;
     }
 
+    public void setImagepath(String imagepath) { this.imagepath = imagepath; }
+
     public void setIdtext(String idtext) {
         this.idtext = idtext;
     }
@@ -76,6 +81,7 @@ public class datalist implements Parcelable {
         parcel.writeString(this.datetext);
         parcel.writeString(this.titletext );
         parcel.writeString(this.diarytext );
+        parcel.writeString(this.imagepath) ;
         //parcel.writeString(this.idtext);
 
 

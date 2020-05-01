@@ -74,21 +74,22 @@ public class DB extends AppCompatActivity {
                 String Title = get_intent.getExtras().getString("keyTitle");
                 String Diary = get_intent.getExtras().getString("keyDiary");
                 String strUri = get_intent.getExtras().getString("keyPath");
+                String Imagepath = "GroupA/" + Date + "/" + Title + ".png";
                 filePath = Uri.parse(strUri);
 
-                datalist tmp_datalist = new datalist(Date, Title, Diary);
+                datalist tmp_datalist = new datalist(Date, Title, Diary, Imagepath);
 
                 DBPath = "Group/GroupA/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.child(Date).push().setValue(tmp_datalist);
-                uploadFile();
+                uploadFile(Date, Title);
                 finish();
                 break;
 
             //DB download
             case Main_Screen_CODE:
 
-                DBPath = "Group/GroupA/2020-04-26/";
+                DBPath = "Group/GroupA/2020-05-01/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -117,19 +118,18 @@ public class DB extends AppCompatActivity {
         }
 
     }
-    private void uploadFile() {
+    private void uploadFile(String Date, String Title) {
+
+        String savePath = "GroupA/" + Date + "/";
 
         if (filePath != null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("업로드중...");
             progressDialog.show();
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
-            Date now = new Date();
-            String filename = formatter.format(now) + ".png";
+            String filename = Title + ".png";
 
-            StorageReference storageReference = firebaseStorage
-                    .getReferenceFromUrl("gs://withdiary-973ac.appspot.com").child("image/" + filename);
+            StorageReference storageReference = firebaseStorage.getReference().child(savePath + filename);
 
 
             storageReference.putFile(filePath)

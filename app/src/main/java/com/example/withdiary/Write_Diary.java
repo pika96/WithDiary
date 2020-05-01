@@ -109,7 +109,7 @@ public class Write_Diary extends AppCompatActivity {
             filePath = data.getData();
             Uri destinetion = Uri.fromFile( new File(getCacheDir(),"cropped"));
             Crop.of( filePath,destinetion ).asSquare().start(this);
-            imageView.setImageURI( Crop.getOutput( data ) );
+            imageView.setImageURI( Crop.getOutput(data));
             /*Log.d("MainActivity", "uri:" + String.valueOf(filePath));
             try{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
@@ -129,7 +129,7 @@ public class Write_Diary extends AppCompatActivity {
 
     private void handle_crop(int Code, Intent result) {
         if(Code == RESULT_OK){
-            imageView.setImageURI( Crop.getOutput( result ) );
+            imageView.setImageURI( Crop.getOutput(result));
 
 
     }
