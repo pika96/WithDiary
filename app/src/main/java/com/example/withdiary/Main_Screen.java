@@ -158,7 +158,7 @@ public class Main_Screen extends AppCompatActivity {
             //datalist datalist = list_data.get(i);
             holder.datetext.setText(list_data.get(position).getDatetext());
             holder.titletext.setText(list_data.get(position).getTitletext());
-            holder.diarytext.setText( list_data.get( position ).getDiarytext() );
+            holder.diarytext.setText( list_data.get(position).getDiarytext() );
             holder.imagepath = list_data.get(position).getImagepath();
 
             Log.d("path",holder.imagepath);
