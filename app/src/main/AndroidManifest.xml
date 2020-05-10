@@ -29,10 +29,12 @@
         </intent-filter>
         </activity>
 
-            <activity android:name=".Select_Diary"></activity>
+        <activity android:name=".Select_Diary" />
 
-            <activity android:name=".DB"></activity>
-            <activity android:name=".Write_Diary"></activity>
+        <activity android:name=".DB" />
+        <activity android:name=".Write_Diary" />
+        <activity android:name=".Login"/>
+        <activity android:name=".Register"/>
 
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />

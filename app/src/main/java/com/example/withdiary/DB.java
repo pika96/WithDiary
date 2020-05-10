@@ -11,8 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +39,11 @@ public class DB extends AppCompatActivity {
 
     public static final int Write_Diary_CODE = 0;
     public static final int Main_Screen_CODE = 1;
+    public static final int Register_CODE = 2;
+    public static final int Login_CODE = 3;
+
+    public static final int Return_OK = 100;
+    public static final int Return_fail = 200;
     //------------- FireBase Setting----------------
     //DB
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -44,13 +54,8 @@ public class DB extends AppCompatActivity {
     //private StorageReference storageReference = firebaseStorage.getReference().child("image/image.png");
     //private StorageReference storageReference = firebaseStorage.getReferenceFromUrl("gs://withdiary-973ac.appspot.com");
 
-    //------------- UI -----------------------------
-    //EditText Titletext;
-    //EditText Diarytext;
-    //ImageView imageView;
-
-    //datalist temp_datalist;
-    //List<datalist> datalists = new ArrayList<>();
+    private FirebaseAuth firebaseAuth  = FirebaseAuth.getInstance();
+    private FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
     ArrayList<datalist> data_list;
     private Uri filePath;
@@ -115,6 +120,57 @@ public class DB extends AppCompatActivity {
                     }
                 });
                 break;
+
+            //Register
+            case Register_CODE:
+                String Name = get_intent.getExtras().getString("name");
+                String Regist_ID = get_intent.getExtras().getString("id");
+                String Regist_PW = get_intent.getExtras().getString("pw");
+
+                firebaseAuth.createUserWithEmailAndPassword(Regist_ID, Regist_PW)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                Intent send_intent = new Intent();
+                                if(task.isSuccessful()){
+                                    Toast.makeText(DB.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
+                                    setResult(Return_OK, send_intent);
+                                    finish();
+                                }else{
+                                    Toast.makeText(DB.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                                    setResult(Return_fail, send_intent);
+                                    finish();
+                                }
+                            }
+                        });
+
+            case Login_CODE :
+                String Login_ID = get_intent.getExtras().getString("id");
+                String Login_PW = get_intent.getExtras().getString("pw");
+
+                firebaseAuth.signInWithEmailAndPassword(Login_ID, Login_PW).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        Intent send_intent = new Intent();
+
+                        if(task.isSuccessful()){
+                            //String LogName = firebaseUser.getDisplayName();
+                            String LogEmail = firebaseUser.getEmail();
+
+                            //Log.d("Name",LogName);
+                            Log.d("Email",LogEmail);
+                            setResult(Return_OK, send_intent);
+                            finish();
+                        }else{
+                            setResult(Return_fail, send_intent);
+                            finish();
+                        }
+                    }
+                });
+
+
         }
 
     }
