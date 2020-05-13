@@ -20,7 +20,7 @@ public class datalist implements Parcelable {
         this.datetext = datetext; //일기 날짜
         this.titletext = titletext; //일기 제목
         this.diarytext = diarytext; //일기 내용
-        this.idtext = idtext;//사용자 아이디
+        //this.idtext = idtext;//사용자 아이디
         this.imagepath = imagepath;//사진
     }
 

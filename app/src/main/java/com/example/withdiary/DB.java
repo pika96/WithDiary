@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -123,7 +124,6 @@ public class DB extends AppCompatActivity {
 
             //Register
             case Register_CODE:
-                String Name = get_intent.getExtras().getString("name");
                 String Regist_ID = get_intent.getExtras().getString("id");
                 String Regist_PW = get_intent.getExtras().getString("pw");
 
@@ -160,7 +160,24 @@ public class DB extends AppCompatActivity {
                             String LogEmail = firebaseUser.getEmail();
 
                             //Log.d("Name",LogName);
-                            Log.d("Email",LogEmail);
+
+                            if(firebaseUser.getDisplayName() == null){
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName("GroupA,GroupB")
+                                        .build();
+                                firebaseUser.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Log.d("test","12345");
+                                                if(task.isSuccessful()){
+                                                    Log.d("suc","User profile updated");
+                                                }
+                                            }
+                                        });
+                            }
+                            Log.d("Name", firebaseUser.getDisplayName());
                             setResult(Return_OK, send_intent);
                             finish();
                         }else{

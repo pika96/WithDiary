@@ -30,13 +30,9 @@ public class Register extends AppCompatActivity {
         regi_btn.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
                 //
-                String Name = NameText.getText().toString();
                 String ID = IDText.getText().toString();
                 String PW = PWText.getText().toString();
 
-                if(Name.length() == 0){
-                    Toast.makeText(Register.this, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }
                 if(ID.length() == 0){
                     Toast.makeText(Register.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -48,7 +44,6 @@ public class Register extends AppCompatActivity {
 
                 Intent Access_Auth = new Intent(Register.this, DB.class);
                 Access_Auth.putExtra("CODE", Register_CODE);
-                Access_Auth.putExtra("name",Name);
                 Access_Auth.putExtra("id",ID);
                 Access_Auth.putExtra("pw",PW);
 
