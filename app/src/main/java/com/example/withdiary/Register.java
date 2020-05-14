@@ -22,9 +22,11 @@ public class Register extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView(R.layout.register);
 
-        final EditText NameText = findViewById(R.id.register_name_text);
+        //final EditText NameText = findViewById(R.id.register_name_text);
         final EditText IDText = findViewById(R.id.register_id_text);
         final EditText PWText = findViewById(R.id.register_password_text);
+        final EditText PW2Text = findViewById(R.id.register_password2_text);
+
 
         Button regi_btn = findViewById(R.id.register_btn);
         regi_btn.setOnClickListener(new Button.OnClickListener(){
@@ -32,12 +34,27 @@ public class Register extends AppCompatActivity {
                 //
                 String ID = IDText.getText().toString();
                 String PW = PWText.getText().toString();
+                String PW2 = PW2Text.getText().toString();
 
-                if(ID.length() == 0){
+
+                if(ID.length() <= 0){
                     Toast.makeText(Register.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(ID.contains("@")==false)
+                {
+
+                    Toast.makeText(Register.this, "이메일 형식의 아이디로 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+
                 }
                 if(PW.length() < 6){
                     Toast.makeText(Register.this, "비밀번호는 6자리이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!PW.equals(PW2))
+                {
+                    Toast.makeText(Register.this, "비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -46,7 +63,6 @@ public class Register extends AppCompatActivity {
                 Access_Auth.putExtra("CODE", Register_CODE);
                 Access_Auth.putExtra("id",ID);
                 Access_Auth.putExtra("pw",PW);
-
                 startActivityForResult(Access_Auth,20);
 
             }

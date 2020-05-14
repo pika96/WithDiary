@@ -66,7 +66,7 @@ public class Login extends AppCompatActivity{
             //OK
             if(resultCode == Return_OK) {
                 Toast.makeText(Login.this, "로그인 성공.", Toast.LENGTH_SHORT).show();
-                Intent Login_Success = new Intent(Login.this, Main_Screen.class);
+                Intent Login_Success = new Intent(Login.this, Make_diary_Activity.class);
                 startActivity(Login_Success);
                 finish();
             }

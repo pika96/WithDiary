@@ -5,12 +5,17 @@
     android:background="@color/babyPink"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/view"
+    <Button
+        android:id="@+id/make_new_diary_btn"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/babyPink" />
+        android:layout_height="wrap_content"
+        android:text="새 일기장 추가" />
 
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/make_diary_listView"

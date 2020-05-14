@@ -1,18 +1,18 @@
 package com.example.withdiary;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,17 @@ public class Make_diary_Activity extends AppCompatActivity {
         setContentView( R.layout.activity_make_diary_ );
 
         init();
+        Button diary_add_btn = findViewById(R.id.make_new_diary_btn );
+        diary_add_btn.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(Make_diary_Activity.this, make_new_diary.class );
+                startActivity(intent);
+
+            }
+        });
     }
+
+
 
     private void init() {
 
@@ -47,11 +57,12 @@ public class Make_diary_Activity extends AppCompatActivity {
         MyListDecoration decoration = new MyListDecoration();
         listview.addItemDecoration(decoration);
     }
+
     private View.OnClickListener onClickItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String str = (String) v.getTag();
-            Toast.makeText(Make_diary_Activity.this, str, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Make_diary_Activity.this, Main_Screen.class );
+            startActivityForResult( intent ,0);
         }
     };
 }
