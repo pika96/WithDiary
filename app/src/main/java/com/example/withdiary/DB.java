@@ -56,7 +56,6 @@ public class DB extends AppCompatActivity {
     //private StorageReference storageReference = firebaseStorage.getReferenceFromUrl("gs://withdiary-973ac.appspot.com");
 
     private FirebaseAuth firebaseAuth  = FirebaseAuth.getInstance();
-    private FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
     ArrayList<datalist> data_list;
     private Uri filePath;
@@ -144,52 +143,7 @@ public class DB extends AppCompatActivity {
                                 }
                             }
                         });
-
-            case Login_CODE :
-                String Login_ID = get_intent.getExtras().getString("id");
-                String Login_PW = get_intent.getExtras().getString("pw");
-
-
-                firebaseAuth.signInWithEmailAndPassword(Login_ID, Login_PW).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        Intent send_intent = new Intent();
-
-                        if(task.isSuccessful()){
-                           // String LogName = firebaseUser.getDisplayName();
-                            //String LogEmail = firebaseUser.getEmail();
-
-                            //Log.d("Name",LogName);
-
-                          /*  if(firebaseUser.getDisplayName() == null){
-
-                                Intent intent = new Intent (DB.this,name.class);
-                                String name = intent.getExtras().getString( "name" );
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(name)
-                                        .build();
-                                firebaseUser.updateProfile(profileUpdates)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                Log.d("test","12345");
-                                                if(task.isSuccessful()){
-                                                    Log.d("suc","User profile updated");
-                                                }
-                                            }
-                                        });
-                            }*/
-                            //Log.d("Name", firebaseUser.getDisplayName());
-                            setResult(Return_OK, send_intent);
-                            finish();
-                        }else{
-                            setResult(Return_fail, send_intent);
-                            finish();
-                        }
-                    }
-                });
-
+                break;
 
         }
 

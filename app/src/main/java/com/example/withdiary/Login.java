@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity{
 
-    public static final int Login_CODE = 3;
-
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
 
@@ -48,8 +46,7 @@ public class Login extends AppCompatActivity{
                     return;
                 }
 
-                Intent Access_Auth = new Intent(Login.this, DB.class);
-                Access_Auth.putExtra("CODE", Login_CODE);
+                Intent Access_Auth = new Intent(Login.this, Make_diary_Activity.class);
                 Access_Auth.putExtra("id",ID);
                 Access_Auth.putExtra("pw",PW);
 
@@ -65,9 +62,9 @@ public class Login extends AppCompatActivity{
         if (requestCode == 20) {
             //OK
             if(resultCode == Return_OK) {
-                Toast.makeText(Login.this, "로그인 성공.", Toast.LENGTH_SHORT).show();
-                Intent Login_Success = new Intent(Login.this, Make_diary_Activity.class);
-                startActivity(Login_Success);
+                //Toast.makeText(Login.this, "로그인 성공.", Toast.LENGTH_SHORT).show();
+                //Intent Login_Success = new Intent(Login.this, Make_diary_Activity.class);
+                //startActivity(Login_Success);
                 finish();
             }
             //Fail
