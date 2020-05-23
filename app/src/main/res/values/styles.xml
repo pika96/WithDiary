@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+
+
+        <!-- Base application theme. -->
+
+        <style name="MyAlertDialogStyle" parent="@style/Theme.AppCompat.Dialog.Alert">
+
+            <item name="android:textColor">@color/babyPink</item>
+            <item name="android:typeface">monospace</item>
+            <item name="android:background">@color/six_gray</item>
+
+        </style>
 </resources>

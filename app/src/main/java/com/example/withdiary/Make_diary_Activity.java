@@ -7,18 +7,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AutomaticZenRule;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +51,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
+    Button button ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +82,40 @@ public class Make_diary_Activity extends AppCompatActivity {
         //Get Nickname
         if(TextUtils.isEmpty(firebaseUser.getDisplayName())){
 
-            AlertDialog.Builder getNameDialog = new AlertDialog.Builder(this);
-            getNameDialog.setTitle("닉네임 입력").setMessage("일기장에서 사용할 닉네임을 입력해주세요!");
-
             final EditText InputName = new EditText(Make_diary_Activity.this);
+            FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            AlertDialog.Builder getNameDialog = new AlertDialog.Builder(this,R.style.MyAlertDialogStyle);
+            getNameDialog.setTitle("닉네임 입력").setMessage("일기장에서 사용할 닉네임을 입력해주세요!");
+            InputName.setLayoutParams( params );
+            InputName.setSingleLine(true);
             getNameDialog.setView(InputName);
             getNameDialog.setCancelable(false);
+            InputName.setTextColor( Color.WHITE);
+            InputName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(InputName.getText().toString().length() >= 2 && InputName.getText().toString().length() <= 8){
+                        button.setEnabled(true);
+                        InputName.setTextColor(Color.RED );
+                    }else{
+                        button.setEnabled(false);
+                        InputName.setTextColor(Color.BLUE );
+                    }
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+
+            });
 
             getNameDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override
@@ -117,7 +151,25 @@ public class Make_diary_Activity extends AppCompatActivity {
                 }
             });
 
-            AlertDialog alertDialog = getNameDialog.create();
+
+
+
+            final AlertDialog alertDialog = getNameDialog.create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                @Override
+
+                public void onShow(DialogInterface dialog) {
+
+                    button = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+                    if (button != null) {
+                        button.setEnabled(false);
+                    }
+
+                }
+
+            });
             alertDialog.show();
 
         }
