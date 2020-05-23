@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,8 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 //Receive Content & upload Server
 
@@ -41,7 +45,9 @@ public class DB extends AppCompatActivity {
     public static final int Write_Diary_CODE = 0;
     public static final int Main_Screen_CODE = 1;
     public static final int Register_CODE = 2;
-    public static final int Login_CODE = 3;
+    public static final int Group_Create_CODE = 3;
+    public static final int User_Info_DB = 4;
+    public static final int get_Grouplist = 5;
 
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
@@ -52,8 +58,6 @@ public class DB extends AppCompatActivity {
 
     // Storage
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    //private StorageReference storageReference = firebaseStorage.getReference().child("image/image.png");
-    //private StorageReference storageReference = firebaseStorage.getReferenceFromUrl("gs://withdiary-973ac.appspot.com");
 
     private FirebaseAuth firebaseAuth  = FirebaseAuth.getInstance();
 
@@ -126,6 +130,7 @@ public class DB extends AppCompatActivity {
                 String Regist_ID = get_intent.getExtras().getString("id");
                 String Regist_PW = get_intent.getExtras().getString("pw");
 
+
                 firebaseAuth.createUserWithEmailAndPassword(Regist_ID, Regist_PW)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -144,6 +149,66 @@ public class DB extends AppCompatActivity {
                             }
                         });
                 break;
+
+            case Group_Create_CODE :
+                String Diary_Title = get_intent.getExtras().getString("Diary_Title");
+                String UID1 = get_intent.getExtras().getString("UID1");
+                String UID2 = get_intent.getExtras().getString("UID2");
+
+
+                databaseReference = firebaseDatabase.getReference();
+                databaseReference = databaseReference.child("/User/" + UID1);
+                databaseReference.child("Group").push().setValue(Diary_Title);
+
+                finish();
+
+
+            case User_Info_DB :
+                String ID = get_intent.getExtras().getString("ID");
+                String Name = get_intent.getExtras().getString("Name");
+                String cur_UID = get_intent.getExtras().getString("UID");
+
+                databaseReference = firebaseDatabase.getReference();
+                Map<String, Object> childUpdates = new HashMap<>();
+                Map<String, Object> UserValues = null;
+                User user = new User(ID, Name, cur_UID);
+                UserValues = user.toMap();
+
+                childUpdates.put("/User/" + cur_UID, UserValues);
+                databaseReference.updateChildren(childUpdates);
+
+                finish();
+
+            case get_Grouplist :
+
+                final ArrayList<String> grouplist = new ArrayList<String>();
+                Log.d("test", "abc");
+
+                String for_grouplist_UID = get_intent.getExtras().getString("UID");
+                DBPath = "User/" + for_grouplist_UID + "/Group/";
+                databaseReference = firebaseDatabase.getReference(DBPath);
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        grouplist.clear();
+
+                        Log.d("test", "abc");
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            String group = snapshot.getValue().toString();
+                            grouplist.add(group);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                Intent grouplistresult_intent = new Intent();
+                grouplistresult_intent.putExtra("Grouplist", grouplist);
+                setResult(11, grouplistresult_intent);
+                finish();
+
 
         }
 

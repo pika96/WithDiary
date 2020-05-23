@@ -1,6 +1,7 @@
 package com.example.withdiary;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +35,9 @@ import java.util.ArrayList;
 
 public class Make_diary_Activity extends AppCompatActivity {
 
+    public static final int User_Info_DB = 4;
+    public static final int get_Grouplist = 5;
+
     private RecyclerView listview;
     private MyAdapter adapter;
 
@@ -49,7 +53,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         Intent get_intent = getIntent();
 
-        String Login_ID = get_intent.getExtras().getString("id");
+        final String Login_ID = get_intent.getExtras().getString("id");
         String Login_PW = get_intent.getExtras().getString("pw");
 
         firebaseAuth.signInWithEmailAndPassword(Login_ID,Login_PW).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -67,6 +71,8 @@ public class Make_diary_Activity extends AppCompatActivity {
             }
         });
 
+        final String UID = firebaseUser.getUid();
+
         //Get Nickname
         if(TextUtils.isEmpty(firebaseUser.getDisplayName())){
 
@@ -81,7 +87,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    String name = InputName.getText().toString();
+                    final String name = InputName.getText().toString();
                     //--------------************** 아무것도 입력 안하고 버튼 클릭시 다이얼로그 종료됨 후에 커스텀 다이얼로그를 사용하여 확인 버튼 비활성화 할것!!!!!!
                     if(TextUtils.isEmpty(name)){
                         Toast.makeText(Make_diary_Activity.this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
@@ -94,6 +100,13 @@ public class Make_diary_Activity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            Intent intent = new Intent(Make_diary_Activity.this, DB.class );
+                                            intent.putExtra("CODE", User_Info_DB);
+                                            intent.putExtra("ID", Login_ID);
+                                            intent.putExtra("Name", name);
+                                            intent.putExtra("UID", UID);
+                                            startActivity(intent);
+
                                             Toast.makeText(Make_diary_Activity.this, "닉네임 등록 완료!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -111,11 +124,16 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         setContentView( R.layout.activity_make_diary_ );
 
+        getGrouplist(UID);
+
         init();
+
         Button diary_add_btn = findViewById(R.id.make_new_diary_btn );
         diary_add_btn.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(Make_diary_Activity.this, make_new_diary.class );
+                intent.putExtra("UID",UID);
+
                 startActivity(intent);
 
             }
@@ -124,6 +142,26 @@ public class Make_diary_Activity extends AppCompatActivity {
 
 
 
+    public void getGrouplist(String UID){
+        Intent get_Group = new Intent(Make_diary_Activity.this, DB.class);
+        get_Group.putExtra("CODE", get_Grouplist);
+        get_Group.putExtra("UID", UID);
+        startActivityForResult(get_Group,10);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult( requestCode, resultCode, data );
+
+        if (requestCode == 10) {
+            if(resultCode == 11) {
+                if (data.getExtras() != null) {
+                    ArrayList<String> ReceiveArr = (ArrayList<String>) data.getSerializableExtra("Grouplist");
+                    //Log.d("test", ReceiveArr.get(0));
+                }
+            }
+        }
+    }
     private void init() {
 
         listview = findViewById(R.id.make_diary_listView);
