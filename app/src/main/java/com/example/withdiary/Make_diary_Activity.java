@@ -176,9 +176,8 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         setContentView( R.layout.activity_make_diary_ );
 
-        getGrouplist(UID);
 
-        init();
+        getGrouplist(UID);
 
         Button diary_add_btn = findViewById(R.id.make_new_diary_btn );
         diary_add_btn.setOnClickListener(new Button.OnClickListener(){
@@ -208,25 +207,35 @@ public class Make_diary_Activity extends AppCompatActivity {
         if (requestCode == 10) {
             if(resultCode == 11) {
                 if (data.getExtras() != null) {
-                    ArrayList<String> ReceiveArr = (ArrayList<String>) data.getSerializableExtra("Grouplist");
-                    //Log.d("test", ReceiveArr.get(0));
+                    ArrayList<String> grouplist = data.getStringArrayListExtra("grouplist");
+                    ArrayList<String> parsegroup = parsegrouplist(grouplist);
+                    printscreen(parsegroup);
                 }
+
             }
         }
     }
-    private void init() {
+
+    private ArrayList<String> parsegrouplist(ArrayList<String> grouplist){
+        ArrayList<String> result = new ArrayList<>();
+        int i;
+        String tmp;
+        for(i =0; i<grouplist.size(); i++){
+            tmp = grouplist.get(i);
+            result.add(tmp.substring(tmp.lastIndexOf("_")+1));
+        }
+
+        return result;
+    }
+    private void printscreen(ArrayList<String> grouplist) {
 
         listview = findViewById(R.id.make_diary_listView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
 
-        ArrayList<String> itemList = new ArrayList<>();
-        itemList.add("일기1");
-        itemList.add("일기2");
-        itemList.add("일기3");
 
 
-        adapter = new MyAdapter(this, itemList, onClickItem);
+        adapter = new MyAdapter(this, grouplist, onClickItem);
         listview.setAdapter(adapter);
 
         MyListDecoration decoration = new MyListDecoration();

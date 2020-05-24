@@ -82,7 +82,6 @@ public class datalist implements Parcelable {
         parcel.writeString(this.titletext );
         parcel.writeString(this.diarytext );
         parcel.writeString(this.imagepath) ;
-        //parcel.writeString(this.idtext);
 
 
 

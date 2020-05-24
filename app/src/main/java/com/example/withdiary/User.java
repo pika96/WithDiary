@@ -9,7 +9,6 @@ public class User {
     public String ID;
     public String name;
     public String UID;
-    public String GroupInfo;
 
     public User(){
 

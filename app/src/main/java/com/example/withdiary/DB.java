@@ -31,6 +31,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ public class DB extends AppCompatActivity {
     private FirebaseAuth firebaseAuth  = FirebaseAuth.getInstance();
 
     ArrayList<datalist> data_list;
+    ArrayList<String> group_list;
+
     private Uri filePath;
     ProgressDialog progressDialog;
 
@@ -70,6 +73,7 @@ public class DB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         data_list = new ArrayList<>();
+        group_list = new ArrayList<>();
 
         final Intent get_intent = getIntent();
         int CODE = get_intent.getExtras().getInt("CODE");
@@ -158,6 +162,8 @@ public class DB extends AppCompatActivity {
 
                 databaseReference = firebaseDatabase.getReference();
                 databaseReference = databaseReference.child("/User/" + UID1);
+                //groupInfo tmp_groupname = new groupInfo(Diary_Title);
+                //databaseReference.child("Group").push().setValue(tmp_groupname);
                 databaseReference.child("Group").push().setValue(Diary_Title);
 
                 finish();
@@ -181,34 +187,31 @@ public class DB extends AppCompatActivity {
 
             case get_Grouplist :
 
-                final ArrayList<String> grouplist = new ArrayList<String>();
-                Log.d("test", "abc");
-
                 String for_grouplist_UID = get_intent.getExtras().getString("UID");
                 DBPath = "User/" + for_grouplist_UID + "/Group/";
+
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        grouplist.clear();
-
-                        Log.d("test", "abc");
+                        group_list.clear();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            String group = snapshot.getValue().toString();
-                            grouplist.add(group);
+                            String group = snapshot.getValue(String.class);
+                            group_list.add(group);
                         }
+
+                        Intent grouplist_intent = new Intent();
+                        grouplist_intent.putStringArrayListExtra("grouplist", group_list);
+                        setResult(11, grouplist_intent);
+                        finish();
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-                Intent grouplistresult_intent = new Intent();
-                grouplistresult_intent.putExtra("Grouplist", grouplist);
-                setResult(11, grouplistresult_intent);
-                finish();
-
 
         }
 
