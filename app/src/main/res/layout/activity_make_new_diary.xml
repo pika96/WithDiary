@@ -48,17 +48,51 @@
             android:textSize="30sp" />
 
         <EditText
-            android:id="@+id/Diary_friend"
+            android:id="@+id/Diary_friend1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="이메일 형식으로 입력"
-            android:inputType="textPersonName" />
+            android:hint="코드 번호 입력"
+            android:inputType="textPersonName"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/Diary_friend2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="코드 번호 입력"
+            android:inputType="textPersonName"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/Diary_friend3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="코드 번호 입력"
+            android:inputType="textPersonName"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/Diary_friend4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="코드 번호 입력"
+            android:inputType="textPersonName"
+            android:visibility="invisible" />
 
         <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
+
+        <Button
+            android:id="@+id/Add_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="사람 추가" />
 
         <Button
             android:id="@+id/Create_diary"

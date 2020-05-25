@@ -2,10 +2,15 @@ package com.example.withdiary;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.app.AutomaticZenRule;
 import android.content.Context;
@@ -19,6 +24,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +37,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,54 +55,56 @@ public class Make_diary_Activity extends AppCompatActivity {
     private RecyclerView listview;
     private MyAdapter adapter;
 
-    private FirebaseAuth firebaseAuth  = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
-    Button button ;
+    Button button;
+    private DrawerLayout mDrawerLayout;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_make_diary_ );
+
 
         Intent get_intent = getIntent();
+        final String Login_ID = get_intent.getExtras().getString( "id" );
+        String Login_PW = get_intent.getExtras().getString( "pw" );
 
-        final String Login_ID = get_intent.getExtras().getString("id");
-        String Login_PW = get_intent.getExtras().getString("pw");
-
-        firebaseAuth.signInWithEmailAndPassword(Login_ID,Login_PW).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword( Login_ID, Login_PW ).addOnCompleteListener( this, new OnCompleteListener < AuthResult >() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onComplete(@NonNull Task < AuthResult > task) {
 
                 Intent send_intent = new Intent();
-                if(task.isSuccessful()){
-                    Toast.makeText(Make_diary_Activity.this, "로그인 성공.", Toast.LENGTH_SHORT).show();
-                    setResult(Return_OK, send_intent);
-                }else{
-                    setResult(Return_fail, send_intent);
+                if (task.isSuccessful()) {
+                    Toast.makeText( Make_diary_Activity.this, "로그인 성공.", Toast.LENGTH_SHORT ).show();
+                    setResult( Return_OK, send_intent );
+                } else {
+                    setResult( Return_fail, send_intent );
                     finish();
                 }
             }
-        });
+        } );
 
         final String UID = firebaseUser.getUid();
-
         //Get Nickname
-        if(TextUtils.isEmpty(firebaseUser.getDisplayName())){
+        if (TextUtils.isEmpty( firebaseUser.getDisplayName() )) {
 
-            final EditText InputName = new EditText(Make_diary_Activity.this);
-            FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
-            params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
-            AlertDialog.Builder getNameDialog = new AlertDialog.Builder(this,R.style.MyAlertDialogStyle);
-            getNameDialog.setTitle("닉네임 입력").setMessage("일기장에서 사용할 닉네임을 입력해주세요!");
+            final EditText InputName = new EditText( Make_diary_Activity.this );
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+            params.leftMargin = getResources().getDimensionPixelSize( R.dimen.dialog_margin );
+            params.rightMargin = getResources().getDimensionPixelSize( R.dimen.dialog_margin );
+            AlertDialog.Builder getNameDialog = new AlertDialog.Builder( this, R.style.MyAlertDialogStyle );
+            getNameDialog.setTitle( "닉네임 입력" ).setMessage( "일기장에서 사용할 닉네임을 입력해주세요!" );
             InputName.setLayoutParams( params );
-            InputName.setSingleLine(true);
-            getNameDialog.setView(InputName);
-            getNameDialog.setCancelable(false);
-            InputName.setTextColor( Color.WHITE);
-            InputName.addTextChangedListener(new TextWatcher() {
+            InputName.setSingleLine( true );
+            getNameDialog.setView( InputName );
+            getNameDialog.setCancelable( false );
+            InputName.setTextColor( Color.WHITE );
+            InputName.addTextChangedListener( new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -102,74 +113,70 @@ public class Make_diary_Activity extends AppCompatActivity {
                 @Override
 
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(InputName.getText().toString().length() >= 2 && InputName.getText().toString().length() <= 8){
-                        button.setEnabled(true);
-                        InputName.setTextColor(Color.RED );
-                    }else{
-                        button.setEnabled(false);
-                        InputName.setTextColor(Color.BLUE );
+                    if (InputName.getText().toString().length() >= 2 && InputName.getText().toString().length() <= 8) {
+                        button.setEnabled( true );
+                        InputName.setTextColor( Color.RED );
+                    } else {
+                        button.setEnabled( false );
+                        InputName.setTextColor( Color.BLUE );
                     }
                 }
+
                 @Override
                 public void afterTextChanged(Editable s) {
 
                 }
 
-            });
+            } );
 
-            getNameDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            getNameDialog.setPositiveButton( "확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
                     final String name = InputName.getText().toString();
                     //--------------************** 아무것도 입력 안하고 버튼 클릭시 다이얼로그 종료됨 후에 커스텀 다이얼로그를 사용하여 확인 버튼 비활성화 할것!!!!!!
-                    if(TextUtils.isEmpty(name)){
-                        Toast.makeText(Make_diary_Activity.this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
-                    }else {
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(name)
-                                .build();
-                        firebaseUser.updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Intent intent = new Intent(Make_diary_Activity.this, DB.class );
-                                            intent.putExtra("CODE", User_Info_DB);
-                                            intent.putExtra("ID", Login_ID);
-                                            intent.putExtra("Name", name);
-                                            intent.putExtra("UID", UID);
-                                            startActivity(intent);
+                    if (TextUtils.isEmpty( name )) {
+                        Toast.makeText( Make_diary_Activity.this, "이름을 입력하세요.", Toast.LENGTH_SHORT ).show();
+                    } else {
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName( name ).build();
+                        firebaseUser.updateProfile( profileUpdates ).addOnCompleteListener( new OnCompleteListener < Void >() {
+                            @Override
+                            public void onComplete(@NonNull Task < Void > task) {
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent( Make_diary_Activity.this, DB.class );
+                                    intent.putExtra( "CODE", User_Info_DB );
+                                    intent.putExtra( "ID", Login_ID );
+                                    intent.putExtra( "Name", name );
+                                    intent.putExtra( "UID", UID );
+                                    startActivity( intent );
 
-                                            Toast.makeText(Make_diary_Activity.this, "닉네임 등록 완료!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                                    Toast.makeText( Make_diary_Activity.this, "닉네임 등록 완료!", Toast.LENGTH_SHORT ).show();
+                                }
+                            }
+                        } );
                         dialog.dismiss();
                     }
 
                 }
-            });
-
-
+            } );
 
 
             final AlertDialog alertDialog = getNameDialog.create();
-            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            alertDialog.setOnShowListener( new DialogInterface.OnShowListener() {
 
                 @Override
 
                 public void onShow(DialogInterface dialog) {
 
-                    button = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    button = alertDialog.getButton( AlertDialog.BUTTON_POSITIVE );
 
                     if (button != null) {
-                        button.setEnabled(false);
+                        button.setEnabled( false );
                     }
 
                 }
 
-            });
+            } );
             alertDialog.show();
 
         }
@@ -177,27 +184,61 @@ public class Make_diary_Activity extends AppCompatActivity {
         setContentView( R.layout.activity_make_diary_ );
 
 
-        getGrouplist(UID);
+        getGrouplist( UID );
 
-        Button diary_add_btn = findViewById(R.id.make_new_diary_btn );
-        diary_add_btn.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent(Make_diary_Activity.this, make_new_diary.class );
-                intent.putExtra("UID",UID);
+        Button diary_add_btn = findViewById( R.id.make_new_diary_btn );
+        diary_add_btn.setOnClickListener( new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent( Make_diary_Activity.this, make_new_diary.class );
+                intent.putExtra( "UID", UID );
 
-                startActivity(intent);
+                startActivity( intent );
 
             }
-        });
+        } );
+
+        Toolbar myToolbar = findViewById( R.id.my_toolbar );
+        setSupportActionBar( myToolbar );
+        mDrawerLayout = (DrawerLayout) findViewById( R.id.drawer_layout );
+        getSupportActionBar().setDisplayShowTitleEnabled( false );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        getSupportActionBar().setHomeAsUpIndicator( R.drawable.flowermdpi );
+        NavigationView navigationView = (NavigationView) findViewById( R.id.nav_view );
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked( true );
+                mDrawerLayout.closeDrawers();
+                int id = menuItem.getItemId();
+
+
+                if (id == R.id.action_settings) {
+                    Toast.makeText( context,  " 클립보드에 코드가 복사되었습니다.", Toast.LENGTH_SHORT ).show();
+
+                } else if (id == R.id.action_settings2) {
+                    Toast.makeText( context,  " 로그아웃을 합니다.", Toast.LENGTH_SHORT ).show();
+                    Intent intent = new Intent( Make_diary_Activity.this, Login.class );
+                    startActivity( intent );
+
+                } else if (id == R.id.action_settings3) {
+                    Toast.makeText( context,  " 이용약관은 없는데ㅎ ", Toast.LENGTH_SHORT ).show();
+
+                }
+
+                return true;
+            }
+
+
+        } );
     }
 
 
-
-    public void getGrouplist(String UID){
-        Intent get_Group = new Intent(Make_diary_Activity.this, DB.class);
-        get_Group.putExtra("CODE", get_Grouplist);
-        get_Group.putExtra("UID", UID);
-        startActivityForResult(get_Group,10);
+    public void getGrouplist(String UID) {
+        Intent get_Group = new Intent( Make_diary_Activity.this, DB.class );
+        get_Group.putExtra( "CODE", get_Grouplist );
+        get_Group.putExtra( "UID", UID );
+        startActivityForResult( get_Group, 10 );
     }
 
     @Override
@@ -205,51 +246,74 @@ public class Make_diary_Activity extends AppCompatActivity {
         super.onActivityResult( requestCode, resultCode, data );
 
         if (requestCode == 10) {
-            if(resultCode == 11) {
+            if (resultCode == 11) {
                 if (data.getExtras() != null) {
-                    ArrayList<String> grouplist = data.getStringArrayListExtra("grouplist");
-                    ArrayList<String> parsegroup = parsegrouplist(grouplist);
-                    printscreen(parsegroup);
+                    ArrayList < String > grouplist = data.getStringArrayListExtra( "grouplist" );
+                    ArrayList < String > parsegroup = parsegrouplist( grouplist );
+                    printscreen( parsegroup );
                 }
 
             }
         }
     }
 
-    private ArrayList<String> parsegrouplist(ArrayList<String> grouplist){
-        ArrayList<String> result = new ArrayList<>();
+    private ArrayList < String > parsegrouplist(ArrayList < String > grouplist) {
+        ArrayList < String > result = new ArrayList <>();
         int i;
         String tmp;
-        for(i =0; i<grouplist.size(); i++){
-            tmp = grouplist.get(i);
-            result.add(tmp.substring(tmp.lastIndexOf("_")+1));
+        for (i = 0; i < grouplist.size(); i++) {
+            tmp = grouplist.get( i );
+            result.add( tmp.substring( tmp.lastIndexOf( "_" ) + 1 ) );
         }
 
         return result;
     }
-    private void printscreen(ArrayList<String> grouplist) {
 
-        listview = findViewById(R.id.make_diary_listView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        listview.setLayoutManager(layoutManager);
+    private void printscreen(ArrayList < String > grouplist) {
+
+        listview = findViewById( R.id.make_diary_listView );
+        LinearLayoutManager layoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
+        listview.setLayoutManager( layoutManager );
 
 
-
-        adapter = new MyAdapter(this, grouplist, onClickItem);
-        listview.setAdapter(adapter);
+        adapter = new MyAdapter( this, grouplist, onClickItem );
+        listview.setAdapter( adapter );
 
         MyListDecoration decoration = new MyListDecoration();
-        listview.addItemDecoration(decoration);
+        listview.addItemDecoration( decoration );
     }
 
     private View.OnClickListener onClickItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Make_diary_Activity.this, Main_Screen.class );
-            startActivityForResult( intent ,0);
+            Intent intent = new Intent( Make_diary_Activity.this, Main_Screen.class );
+            startActivityForResult( intent, 0 );
         }
     };
-}
+
+   /* @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }*/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home: {
+                mDrawerLayout.openDrawer( GravityCompat.START );
+                return true;
+            }
+        }
+            return super.onOptionsItemSelected( item );
+
+        }
+
+
+    }
 
 
  class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -310,4 +374,5 @@ public class Make_diary_Activity extends AppCompatActivity {
             outRect.right = 30;
         }
     }
+
 }
