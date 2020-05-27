@@ -64,6 +64,7 @@ public class DB extends AppCompatActivity {
 
     ArrayList<datalist> data_list;
     ArrayList<String> group_list;
+    ArrayList<String> UID_list;
 
     private Uri filePath;
     ProgressDialog progressDialog;
@@ -74,6 +75,7 @@ public class DB extends AppCompatActivity {
 
         data_list = new ArrayList<>();
         group_list = new ArrayList<>();
+        UID_list = new ArrayList<>();
 
         final Intent get_intent = getIntent();
         int CODE = get_intent.getExtras().getInt("CODE");
@@ -155,17 +157,20 @@ public class DB extends AppCompatActivity {
                 break;
 
             case Group_Create_CODE :
+
                 String Diary_Title = get_intent.getExtras().getString("Diary_Title");
-                String UID1 = get_intent.getExtras().getString("UID1");
-                String UID2 = get_intent.getExtras().getString("UID2");
+                UID_list = get_intent.getStringArrayListExtra("UID");
 
+                for(int i = 0; i < UID_list.size(); i++) {
 
-                databaseReference = firebaseDatabase.getReference();
-                databaseReference = databaseReference.child("/User/" + UID1);
-                //groupInfo tmp_groupname = new groupInfo(Diary_Title);
-                //databaseReference.child("Group").push().setValue(tmp_groupname);
-                databaseReference.child("Group").push().setValue(Diary_Title);
+                    String UID = UID_list.get(i);
 
+                    databaseReference = firebaseDatabase.getReference();
+                    databaseReference = databaseReference.child("/User/" + UID);
+
+                    databaseReference.child("Group").push().setValue(Diary_Title);
+
+                }
                 finish();
 
 

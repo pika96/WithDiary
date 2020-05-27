@@ -134,7 +134,6 @@ public class Make_diary_Activity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
 
                     final String name = InputName.getText().toString();
-                    //--------------************** 아무것도 입력 안하고 버튼 클릭시 다이얼로그 종료됨 후에 커스텀 다이얼로그를 사용하여 확인 버튼 비활성화 할것!!!!!!
                     if (TextUtils.isEmpty( name )) {
                         Toast.makeText( Make_diary_Activity.this, "이름을 입력하세요.", Toast.LENGTH_SHORT ).show();
                     } else {
@@ -205,6 +204,16 @@ public class Make_diary_Activity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator( R.drawable.flowermdpi );
         NavigationView navigationView = (NavigationView) findViewById( R.id.nav_view );
         navigationView.bringToFront();
+
+        //수정 요망
+        TextView UserInfo_Name = findViewById(R.id.User_Name);
+        TextView UserInfo_Email = findViewById(R.id.User_mail);
+        TextView UserInfo_UID = findViewById(R.id.User_UID);
+
+        //UserInfo_Name.setText(firebaseUser.getDisplayName());
+        //UserInfo_Email.setText(Login_ID);
+        //UserInfo_UID.setText(firebaseUser.getUid());
+
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -217,7 +226,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                     Toast.makeText( context,  " 클립보드에 코드가 복사되었습니다.", Toast.LENGTH_SHORT ).show();
 
                 } else if (id == R.id.action_settings2) {
-                    Toast.makeText( context,  " 로그아웃을 합니다.", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( context,  " 로그아웃 되었습니다.", Toast.LENGTH_SHORT ).show();
                     Intent intent = new Intent( Make_diary_Activity.this, Login.class );
                     startActivity( intent );
 
