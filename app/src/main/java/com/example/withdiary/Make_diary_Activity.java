@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.app.AutomaticZenRule;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -204,17 +206,21 @@ public class Make_diary_Activity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator( R.drawable.flowermdpi );
         NavigationView navigationView = (NavigationView) findViewById( R.id.nav_view );
         navigationView.bringToFront();
+        //View header = navigationView.getHeaderView(0);
+        View headerView = navigationView.inflateHeaderView( R.layout.userinfo_header );
+        TextView UserInfo_Name = headerView.findViewById( R.id.User_Name );
+        TextView UserInfo_Email = headerView.findViewById( R.id.User_mail );
+        TextView UserInfo_UID = headerView.findViewById( R.id.User_UID );
+        //TextView UserInfo_Name = findViewById(R.id.User_Name);
+        //TextView UserInfo_Email = findViewById(R.id.User_mail);
+        //TextView UserInfo_UID = findViewById(R.id.User_UID);
 
-        //수정 요망
-        TextView UserInfo_Name = findViewById(R.id.User_Name);
-        TextView UserInfo_Email = findViewById(R.id.User_mail);
-        TextView UserInfo_UID = findViewById(R.id.User_UID);
-
-        //UserInfo_Name.setText(firebaseUser.getDisplayName());
-        //UserInfo_Email.setText(Login_ID);
-        //UserInfo_UID.setText(firebaseUser.getUid());
+        UserInfo_Name.setText( firebaseUser.getDisplayName() );
+        UserInfo_Email.setText( Login_ID );
+        UserInfo_UID.setText( firebaseUser.getUid() );
 
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
+
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked( true );
@@ -223,15 +229,18 @@ public class Make_diary_Activity extends AppCompatActivity {
 
 
                 if (id == R.id.action_settings) {
-                    Toast.makeText( context,  " 클립보드에 코드가 복사되었습니다.", Toast.LENGTH_SHORT ).show();
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService( Context.CLIPBOARD_SERVICE );
+                    ClipData clip = ClipData.newPlainText( "UID", firebaseUser.getUid() );
+                    clipboard.setPrimaryClip( clip );
+                    Toast.makeText( context, " 클립보드에 코드가 복사되었습니다.", Toast.LENGTH_SHORT ).show();
 
                 } else if (id == R.id.action_settings2) {
-                    Toast.makeText( context,  " 로그아웃 되었습니다.", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( context, " 로그아웃 되었습니다.", Toast.LENGTH_SHORT ).show();
                     Intent intent = new Intent( Make_diary_Activity.this, Login.class );
                     startActivity( intent );
 
                 } else if (id == R.id.action_settings3) {
-                    Toast.makeText( context,  " 이용약관은 없는데ㅎ ", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( context, " 이용약관은 없는데ㅎ ", Toast.LENGTH_SHORT ).show();
 
                 }
 
@@ -317,71 +326,83 @@ public class Make_diary_Activity extends AppCompatActivity {
                 return true;
             }
         }
-            return super.onOptionsItemSelected( item );
-
-        }
-
+        return super.onOptionsItemSelected( item );
 
     }
 
-
- class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-
-    private ArrayList<String> itemList;
-    private Context context;
-    private View.OnClickListener onClickItem;
-
-    public MyAdapter(Context context, ArrayList<String> itemList, View.OnClickListener onClickItem) {
-        this.context = context;
-        this.itemList = itemList;
-        this.onClickItem = onClickItem;
-    }
-
+    private long time = 0;
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() - time >= 2000) {
+            time = System.currentTimeMillis();
+            Toast.makeText( getApplicationContext(), "뒤로 버튼을 한번 더 누르면 로그아웃 됩니다.", Toast.LENGTH_SHORT ).show();
+        } else if (System.currentTimeMillis() - time < 2000) {
+            finish();
 
 
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.make_diary_item, parent, false);
-
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        String item = itemList.get(position);
-
-        holder.textview.setText(item);
-        holder.textview.setTag(item);
-        holder.textview.setOnClickListener(onClickItem);
-    }
-
-    @Override
-    public int getItemCount() {
-        return itemList.size();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView textview;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            textview = itemView.findViewById(R.id.Diary_Title);
-        }
-    }
-}
- class MyListDecoration extends RecyclerView.ItemDecoration {
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
-        if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-            outRect.right = 30;
         }
     }
 
+    class MyAdapter extends RecyclerView.Adapter < MyAdapter.ViewHolder > {
+
+        private ArrayList < String > itemList;
+        private Context context;
+        private View.OnClickListener onClickItem;
+
+        public MyAdapter(Context context, ArrayList < String > itemList, View.OnClickListener onClickItem) {
+            this.context = context;
+            this.itemList = itemList;
+            this.onClickItem = onClickItem;
+        }
+
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+
+            View view = LayoutInflater.from( context ).inflate( R.layout.make_diary_item, parent, false );
+
+            return new ViewHolder( view );
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            String item = itemList.get( position );
+
+            holder.textview.setText( item );
+            holder.textview.setTag( item );
+            holder.textview.setOnClickListener( onClickItem );
+        }
+
+        @Override
+        public int getItemCount() {
+            return itemList.size();
+        }
+
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView textview;
+
+            public ViewHolder(View itemView) {
+                super( itemView );
+
+                textview = itemView.findViewById( R.id.Diary_Title );
+            }
+        }
+    }
+
+    class MyListDecoration extends RecyclerView.ItemDecoration {
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            if (parent.getChildAdapterPosition( view ) != parent.getAdapter().getItemCount() - 1) {
+                outRect.right = 30;
+            }
+        }
+
+    }
 }
