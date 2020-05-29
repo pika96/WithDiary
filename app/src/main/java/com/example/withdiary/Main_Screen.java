@@ -42,7 +42,7 @@ public class Main_Screen extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
     String cur_User;
-    String cur_Group;
+    public String cur_Group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class Main_Screen extends AppCompatActivity {
         layoutManager.setReverseLayout( true );//최근 글 부터 보이게 역순 출력
         layoutManager.setStackFromEnd( true );//최근 글 부터 보이게 역순 출력
         recyclerView.setLayoutManager(layoutManager);
-        recyclerAdapter = new RecyclerAdapter(data_list,this);
+        recyclerAdapter = new RecyclerAdapter(data_list,this, cur_Group);
         recyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataSetChanged();
     }
@@ -125,12 +125,15 @@ public class Main_Screen extends AppCompatActivity {
         private ArrayList<datalist> list_data;
         private Context context;
 
+        String curGroup;
+
         private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
 
-        public RecyclerAdapter(ArrayList <datalist> list_data, Context context) {
+        public RecyclerAdapter(ArrayList <datalist> list_data, Context context, String curGroup) {
             this.list_data = list_data;
             this.context = context;
+            this.curGroup = curGroup;
 
         }
 
@@ -215,7 +218,7 @@ public class Main_Screen extends AppCompatActivity {
                         String title = titletext.getText().toString();
                         String diary = diarytext;
 
-                        String imagepath = "GroupA/" + date + "/" + title + ".png";
+                        String imagepath = curGroup + "/" + date + "/" + title + ".png";
 
                         intent.putExtra("date", date );
                         intent.putExtra("title", title);
