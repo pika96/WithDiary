@@ -293,7 +293,6 @@ public class Make_diary_Activity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
         listview.setLayoutManager( layoutManager );
 
-
         adapter = new MyAdapter( this, grouplist, onClickItem );
         listview.setAdapter( adapter );
 

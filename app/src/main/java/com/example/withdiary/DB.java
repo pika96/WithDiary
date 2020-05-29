@@ -73,6 +73,8 @@ public class DB extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String cur_groupname = "GroupA";
+
         data_list = new ArrayList<>();
         group_list = new ArrayList<>();
         UID_list = new ArrayList<>();
@@ -89,22 +91,23 @@ public class DB extends AppCompatActivity {
                 String Title = get_intent.getExtras().getString("keyTitle");
                 String Diary = get_intent.getExtras().getString("keyDiary");
                 String strUri = get_intent.getExtras().getString("keyPath");
-                String Imagepath = "GroupA/" + Date + "/" + Title + ".png";
+                String Imagepath = cur_groupname+ "/" + Date + "/" + Title + ".png";
                 filePath = Uri.parse(strUri);
 
                 datalist tmp_datalist = new datalist(Date, Title, Diary, Imagepath);
 
-                DBPath = "Group/GroupA/";
+                DBPath = "Group/" + cur_groupname + "/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
-                databaseReference.child(Date).push().setValue(tmp_datalist);
-                uploadFile(Date, Title);
+                databaseReference.push().setValue(tmp_datalist);
+                uploadFile(cur_groupname, Date, Title);
                 finish();
                 break;
 
             //DB download
             case Main_Screen_CODE:
 
-                DBPath = "Group/GroupA/2020-05-01/";
+                DBPath = "Group/" + cur_groupname + "/";
+
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -221,9 +224,9 @@ public class DB extends AppCompatActivity {
         }
 
     }
-    private void uploadFile(String Date, String Title) {
+    private void uploadFile(String cur_groupname, String Date, String Title) {
 
-        String savePath = "GroupA/" + Date + "/";
+        String savePath = cur_groupname + "/" + Date + "/";
 
         if (filePath != null) {
             progressDialog = new ProgressDialog(this);
