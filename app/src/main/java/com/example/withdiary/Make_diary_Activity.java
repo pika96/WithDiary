@@ -303,8 +303,11 @@ public class Make_diary_Activity extends AppCompatActivity {
     private View.OnClickListener onClickItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            String groupname = (String) v.getTag();
             Intent intent = new Intent( Make_diary_Activity.this, Main_Screen.class );
-            startActivityForResult( intent, 0 );
+            intent.putExtra("cur_User",firebaseUser.getDisplayName());
+            intent.putExtra("cur_Group", groupname);
+            startActivity(intent);
         }
     };
 

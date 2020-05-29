@@ -72,22 +72,24 @@
                                 android:id="@+id/item_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="0"
                                 android:fontFamily="@font/inkkor"
-                                android:text="날짜"
+                                android:text="날짜 "
                                 android:textColor="@color/four_gray"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
-                            <FrameLayout
-                                android:layout_width="100dp"
-                                android:layout_height="match_parent">
-
-                            </FrameLayout>
+                            <TextView
+                                android:id="@+id/date_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
 
                             <TextView
                                 android:id="@+id/item_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="0"
                                 android:fontFamily="@font/inkkor"
                                 android:text="사용자아이디"
                                 android:textAlignment="center"
@@ -96,10 +98,10 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/item_content"
+                                android:id="@+id/id_content"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="0sp" />
+                                android:layout_weight="1" />
 
                         </LinearLayout>
 

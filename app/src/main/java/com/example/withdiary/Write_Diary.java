@@ -41,6 +41,9 @@ public class Write_Diary extends AppCompatActivity {
     private static final int CROP_FROM_CAMERA = 2;
 
 
+    String curUser;
+    String curGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,9 @@ public class Write_Diary extends AppCompatActivity {
 
         //ImageButton imageButton = findViewById(R.id.Picture);
 
+        Intent get_intent = getIntent();
+        curUser = get_intent.getExtras().getString("curUser");
+        curGroup = get_intent.getExtras().getString("curGroup");
         imageView = findViewById(R.id.imageView);
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +95,9 @@ public class Write_Diary extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
                 String str_date = sdf.format(date);
 
-                intent.putExtra("CODE",REQUESTCODE);
+                intent.putExtra("CODE", REQUESTCODE);
+                intent.putExtra("keyGroup", curGroup);
+                intent.putExtra("keyUser", curUser);
                 intent.putExtra("keyDate",str_date);
                 intent.putExtra("keyTitle",Title);
                 intent.putExtra("keyDiary",Diary);

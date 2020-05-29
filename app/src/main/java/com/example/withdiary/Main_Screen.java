@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
@@ -42,28 +40,22 @@ public class Main_Screen extends AppCompatActivity {
 
 
     SwipeRefreshLayout swipeRefreshLayout;
+
+    String cur_User;
+    String cur_Group;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
-
-        /*final ImageView testimage = findViewById(R.id.test_image);
-        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if(task.isSuccessful()){
-                    Glide.with(Main_Screen.this)
-                            .load(task.getResult())
-                            .into(testimage);
-                } else{
-                    //Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
-
         data_list = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
+
+        Intent get_Intent = getIntent();
+
+        cur_User = get_Intent.getExtras().getString("cur_User");
+        cur_Group = get_Intent.getExtras().getString("cur_Group");
 
         get_DB();
 
@@ -72,7 +64,9 @@ public class Main_Screen extends AppCompatActivity {
         addbtn.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(Main_Screen.this, Write_Diary.class );
-                startActivityForResult( intent ,0);
+                intent.putExtra("curUser", cur_User);
+                intent.putExtra("curGroup", cur_Group);
+                startActivity(intent);
 
             }
         });
@@ -107,10 +101,10 @@ public class Main_Screen extends AppCompatActivity {
     public void get_DB(){
         Intent Access_DB = new Intent(Main_Screen.this, DB.class);
         Access_DB.putExtra("CODE",Main_Screen_CODE);
-        //+ Date recv
+        Access_DB.putExtra("curGroup", cur_Group);
         startActivityForResult(Access_DB,10);
-
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
@@ -150,19 +144,17 @@ public class Main_Screen extends AppCompatActivity {
             ItemViewHolder holder = new ItemViewHolder( view );
             return holder;
 
-
-
         }
 
         @Override
         public void onBindViewHolder(@NonNull final ItemViewHolder holder, int position){
-            //datalist datalist = list_data.get(i);
+
             holder.datetext.setText(list_data.get(position).getDatetext());
             holder.titletext.setText(list_data.get(position).getTitletext());
-            holder.diarytext.setText( list_data.get(position).getDiarytext() );
+            holder.diarytext = list_data.get(position).getDiarytext();
             holder.imagepath = list_data.get(position).getImagepath();
+            holder.writeUser.setText(list_data.get(position).getWriteUser());
 
-            Log.d("path",holder.imagepath);
 
             StorageReference storageReference = firebaseStorage.getReference().child(holder.imagepath);
 
@@ -198,7 +190,8 @@ public class Main_Screen extends AppCompatActivity {
         class ItemViewHolder extends RecyclerView.ViewHolder{
              TextView datetext;
              TextView titletext;
-             TextView diarytext;
+             String diarytext;
+             TextView writeUser;
 
              String imagepath;
              ImageView imageview;
@@ -206,10 +199,10 @@ public class Main_Screen extends AppCompatActivity {
             public ItemViewHolder(@NonNull View itemView){
 
                 super(itemView);
-                this.datetext=itemView.findViewById(R.id.item_date);
+                this.datetext=itemView.findViewById(R.id.date_content);
                 this.titletext=itemView.findViewById(R.id.item_titletext);
-                this.diarytext=itemView.findViewById( R.id.item_content);
                 this.imageview=itemView.findViewById(R.id.item_imageView);
+                this.writeUser=itemView.findViewById(R.id.id_content);
 
                 //Select Diary
                 itemView.setOnClickListener( new View.OnClickListener() {
@@ -220,26 +213,17 @@ public class Main_Screen extends AppCompatActivity {
                         Intent intent = new Intent(context, Select_Diary.class);
                         String date = datetext.getText().toString();
                         String title = titletext.getText().toString();
-                        String diary = diarytext.getText().toString();
+                        String diary = diarytext;
 
                         String imagepath = "GroupA/" + date + "/" + title + ".png";
 
                         intent.putExtra("date", date );
                         intent.putExtra("title", title);
-                        intent.putExtra( "diary", diary );
+                        intent.putExtra( "diary", diary);
                         intent.putExtra("imagepath", imagepath);
-
-
 
                         ((Activity) context).startActivity(intent);
 
-
-
-
-
-
-                        //Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
-                        //화면 전환 기능
                     }
                 } );
 

@@ -73,7 +73,7 @@ public class DB extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String cur_groupname = "GroupA";
+        String cur_groupname;
 
         data_list = new ArrayList<>();
         group_list = new ArrayList<>();
@@ -87,14 +87,16 @@ public class DB extends AppCompatActivity {
             //DB upload
             case Write_Diary_CODE:
 
+                cur_groupname = get_intent.getExtras().getString("keyGroup");
+                String writeUser = get_intent.getExtras().getString("keyUser");
                 String Date = get_intent.getExtras().getString("keyDate");
                 String Title = get_intent.getExtras().getString("keyTitle");
                 String Diary = get_intent.getExtras().getString("keyDiary");
                 String strUri = get_intent.getExtras().getString("keyPath");
-                String Imagepath = cur_groupname+ "/" + Date + "/" + Title + ".png";
+                String Imagepath = cur_groupname + "/" + Date + "/" + Title + ".png";
                 filePath = Uri.parse(strUri);
 
-                datalist tmp_datalist = new datalist(Date, Title, Diary, Imagepath);
+                datalist tmp_datalist = new datalist(writeUser, Date, Title, Diary, Imagepath);
 
                 DBPath = "Group/" + cur_groupname + "/";
                 databaseReference = firebaseDatabase.getReference(DBPath);
@@ -106,6 +108,7 @@ public class DB extends AppCompatActivity {
             //DB download
             case Main_Screen_CODE:
 
+                cur_groupname = get_intent.getExtras().getString("curGroup");
                 DBPath = "Group/" + cur_groupname + "/";
 
                 databaseReference = firebaseDatabase.getReference(DBPath);
