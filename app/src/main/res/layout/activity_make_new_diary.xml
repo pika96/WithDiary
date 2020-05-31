@@ -16,11 +16,6 @@
             android:textAlignment="center"
             android:textSize="36sp" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="100dp" />
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
@@ -51,8 +46,8 @@
             android:id="@+id/Diary_friend1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="코드 번호 입력"
+            android:ems="28"
+            android:hint="코드 번호 입력(입력 안하면 나만의 일기장)"
             android:inputType="textPersonName"
             android:visibility="visible" />
 
@@ -83,11 +78,6 @@
             android:inputType="textPersonName"
             android:visibility="invisible" />
 
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="100dp" />
-
         <Button
             android:id="@+id/Add_friend"
             android:layout_width="match_parent"
@@ -95,9 +85,16 @@
             android:text="사람 추가" />
 
         <Button
+            android:id="@+id/delete_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="사람 삭제" />
+
+        <Button
             android:id="@+id/Create_diary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="일기장 생성" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

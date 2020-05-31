@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.app.AutomaticZenRule;
@@ -50,7 +51,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class Make_diary_Activity extends AppCompatActivity {
-
+    SwipeRefreshLayout swipeRefreshLayout;
     public static final int User_Info_DB = 4;
     public static final int get_Grouplist = 5;
 
@@ -92,6 +93,7 @@ public class Make_diary_Activity extends AppCompatActivity {
         } );
 
         final String UID = firebaseUser.getUid();
+
         //Get Nickname
         if (TextUtils.isEmpty( firebaseUser.getDisplayName() )) {
 
@@ -130,6 +132,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                 }
 
             } );
+
 
             getNameDialog.setPositiveButton( "확인", new DialogInterface.OnClickListener() {
                 @Override
@@ -249,6 +252,14 @@ public class Make_diary_Activity extends AppCompatActivity {
 
 
         } );
+        swipeRefreshLayout=findViewById( R.id.swipe2 );
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 
@@ -339,7 +350,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         if (System.currentTimeMillis() - time >= 2000) {
             time = System.currentTimeMillis();
-            Toast.makeText( getApplicationContext(), "뒤로 버튼을 한번 더 누르면 로그아웃 됩니다.", Toast.LENGTH_SHORT ).show();
+            Toast.makeText( getApplicationContext(), "뒤로 버튼을 한번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT ).show();
         } else if (System.currentTimeMillis() - time < 2000) {
             finish();
 

@@ -1,13 +1,20 @@
 package com.example.withdiary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,41 +30,49 @@ import com.google.firebase.storage.StorageReference;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 public class Main_Screen extends AppCompatActivity {
 
     public static final int Main_Screen_CODE = 1;
-
     ArrayList<datalist> data_list;
-
-    RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter;
-
-
+   RecyclerAdapter recyclerAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
-
     String cur_User;
     public String cur_Group;
+    Toolbar myToolbar;
+    RecyclerView recyclerView;
+    TextView emptyView;
+    TextView notemptyView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-
-        data_list = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
-
         Intent get_Intent = getIntent();
-
         cur_User = get_Intent.getExtras().getString("cur_User");
         cur_Group = get_Intent.getExtras().getString("cur_Group");
-
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar2);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle(cur_Group);
+        data_list = new ArrayList<>();
+        recyclerView = findViewById(R.id.recyclerView);
+        emptyView=findViewById( R.id.empty_text );
+        notemptyView=findViewById( R.id.not_empty_text );
         get_DB();
+
+
+
 
         //Write Diary
         ImageButton addbtn = findViewById(R.id.Diary_add);
@@ -70,9 +85,6 @@ public class Main_Screen extends AppCompatActivity {
 
             }
         });
-
-
-
         swipeRefreshLayout=findViewById( R.id.swipe );
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -80,11 +92,52 @@ public class Main_Screen extends AppCompatActivity {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 get_DB();
+
             }
         });
 
 
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_delete_diary:
+                show();
+                break;
+                 }
+        return true;
+    }
+
+    private void show() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("일기장을 삭제하시겠습니까?");
+        builder.setMessage("진짜로 삭제됩니다");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"예",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"아니오",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        builder.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu2, menu);
+        return true;
+    }
+
 
     public void printscreen(){
         recyclerView.setHasFixedSize( true );
@@ -94,6 +147,16 @@ public class Main_Screen extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerAdapter = new RecyclerAdapter(data_list,this, cur_Group);
         recyclerView.setAdapter(recyclerAdapter);
+        if (recyclerAdapter.getItemCount() == 0) {
+
+            emptyView.setVisibility(View.VISIBLE);
+            notemptyView.setVisibility( View.GONE );
+        }
+        else {
+
+            emptyView.setVisibility(View.GONE);
+            notemptyView.setVisibility( View.VISIBLE );
+        }
         recyclerAdapter.notifyDataSetChanged();
     }
 
@@ -120,14 +183,15 @@ public class Main_Screen extends AppCompatActivity {
     }
 
 
+
     }
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>{
         private ArrayList<datalist> list_data;
         private Context context;
-
         String curGroup;
 
         private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+
 
 
         public RecyclerAdapter(ArrayList <datalist> list_data, Context context, String curGroup) {
@@ -136,6 +200,7 @@ public class Main_Screen extends AppCompatActivity {
             this.curGroup = curGroup;
 
         }
+
 
 
 
@@ -174,12 +239,18 @@ public class Main_Screen extends AppCompatActivity {
                 }
             });
 
+
          }
 
         @Override
         public int getItemCount()
         {
-            return(list_data!=null? list_data.size():0);
+            if (list_data == null) {
+                return 0;
+            }
+
+            return list_data.size();
+
         }
 
         void additem(datalist datalist)
@@ -190,6 +261,8 @@ public class Main_Screen extends AppCompatActivity {
         void remove(int position){
             list_data.remove(position);
         }
+
+
         class ItemViewHolder extends RecyclerView.ViewHolder{
              TextView datetext;
              TextView titletext;
@@ -236,6 +309,7 @@ public class Main_Screen extends AppCompatActivity {
 
 
     }
+
 
 
 

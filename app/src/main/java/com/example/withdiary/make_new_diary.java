@@ -3,7 +3,10 @@ package com.example.withdiary;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -24,19 +27,28 @@ public class make_new_diary extends AppCompatActivity {
         final EditText Friendtext2 = findViewById(R.id.Diary_friend2);
         final EditText Friendtext3 = findViewById(R.id.Diary_friend3);
         final EditText Friendtext4 = findViewById(R.id.Diary_friend4);
-
         final ArrayList<String> UID_List = new ArrayList<>();
-
         Intent get_intent = getIntent();
         final String UID = get_intent.getExtras().getString("UID");
         UID_List.add(UID);
+
+
 
         findViewById(R.id.Create_diary ).setOnClickListener( new View.OnClickListener() {
 
             // Do processing Title or Diary nullException
             @Override
             public void onClick(View v) {
+                if(Diary_name_text.getText().toString().length()==0){
+                    Toast.makeText( make_new_diary.this, "일기장 제목을 입력하세요.", Toast.LENGTH_SHORT ).show();
+                }
+                else if(Diary_name_text.getText().toString().contains( "_" )){
+                    Toast.makeText( make_new_diary.this, "올바르지 않은 형식입니다.", Toast.LENGTH_SHORT ).show();
+                }
+
+                else{
                 String Diary_Title = UID + "_" + Diary_name_text.getText().toString();
+
                 String[] Friend_UID = {
                         Friendtext1.getText().toString(),
                         Friendtext2.getText().toString(),
@@ -55,6 +67,7 @@ public class make_new_diary extends AppCompatActivity {
 
                 startActivity(send_intent);
                 finish();
+                }
             }
         });
         findViewById(R.id.Add_friend ).setOnClickListener( new View.OnClickListener() {
@@ -76,6 +89,29 @@ public class make_new_diary extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText( make_new_diary.this,  " 사람을 더 추가할 수 없습니다.", Toast.LENGTH_SHORT ).show();
+
+                }
+            }
+        });
+        findViewById(R.id.delete_friend).setOnClickListener( new View.OnClickListener() {
+
+            // Do processing Title or Diary nullException
+            @Override
+            public void onClick(View v) {
+                if (count ==4){
+                    Friendtext4.setVisibility(View.INVISIBLE );
+                    count--;
+                }
+                else if (count ==3){
+                    Friendtext3.setVisibility(View.INVISIBLE );
+                    count--;
+                }
+                else if (count ==2){
+                    Friendtext2.setVisibility(View.INVISIBLE );
+                    count--;
+                }
+                else {
+                    Toast.makeText( make_new_diary.this,  "님 친구 없음?", Toast.LENGTH_SHORT ).show();
 
                 }
             }
