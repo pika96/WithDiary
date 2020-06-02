@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
@@ -43,15 +44,15 @@ public class Main_Screen extends AppCompatActivity {
 
     public static final int Main_Screen_CODE = 1;
     ArrayList<datalist> data_list;
-   RecyclerAdapter recyclerAdapter;
+    RecyclerAdapter recyclerAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     String cur_User;
     public String cur_Group;
     Toolbar myToolbar;
     RecyclerView recyclerView;
-    TextView emptyView;
-    TextView notemptyView;
-
+    ImageView emptyView;
+    ImageView notemptyView;
+    int[] image = {R.drawable.flower3_2, R.drawable.phrase1, R.drawable.phrase2, R.drawable.phrase3, R.drawable.phrase4, R.drawable.phrase5};
 
 
     @Override
@@ -68,7 +69,7 @@ public class Main_Screen extends AppCompatActivity {
         data_list = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         emptyView=findViewById( R.id.empty_text );
-        notemptyView=findViewById( R.id.not_empty_text );
+        notemptyView=findViewById( R.id.not_empty_image );
         get_DB();
 
 
@@ -147,13 +148,17 @@ public class Main_Screen extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerAdapter = new RecyclerAdapter(data_list,this, cur_Group);
         recyclerView.setAdapter(recyclerAdapter);
+
+
         if (recyclerAdapter.getItemCount() == 0) {
 
             emptyView.setVisibility(View.VISIBLE);
             notemptyView.setVisibility( View.GONE );
         }
         else {
-
+            Random random = new Random(  );
+            int num = random.nextInt(image.length);
+            notemptyView.setImageResource( image[num] );
             emptyView.setVisibility(View.GONE);
             notemptyView.setVisibility( View.VISIBLE );
         }

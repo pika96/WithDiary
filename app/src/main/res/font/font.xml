@@ -4,4 +4,8 @@
         android:fontStyle = "normal"
         android:fontWeight = "400"
         android:font = "@font/inkkor"/>
+    <font
+        android:fontStyle = "normal"
+        android:fontWeight = "400"
+        android:font = "@font/goyang"/>
 </font-family>
