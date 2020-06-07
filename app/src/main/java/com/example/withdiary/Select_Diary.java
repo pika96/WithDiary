@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,8 +26,11 @@ import com.google.firebase.storage.StorageReference;
 
 public class Select_Diary extends AppCompatActivity {
 
+    public static final int delete_DIARY_CODE = 6;
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     Toolbar myToolbar;
+    String key;
+    String curGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -48,6 +52,9 @@ public class Select_Diary extends AppCompatActivity {
         tx2.setText( datetext );
 
         String imagepath = intent.getExtras().getString("imagepath");
+        curGroup = intent.getExtras().getString("curGroup");
+        key = intent.getExtras().getString("key");
+
         StorageReference storageReference = firebaseStorage.getReference().child(imagepath);
 
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -85,7 +92,14 @@ public class Select_Diary extends AppCompatActivity {
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(Select_Diary.this, DB.class);
+                        intent.putExtra("CODE", delete_DIARY_CODE);
+                        intent.putExtra("curGroup", curGroup);
+                        intent.putExtra("key",key);
+                        startActivity(intent);
                         Toast.makeText(getApplicationContext(),"예",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
         builder.setNegativeButton("아니오",

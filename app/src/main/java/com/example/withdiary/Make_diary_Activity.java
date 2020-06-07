@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
+import android.app.Activity;
 import android.app.AutomaticZenRule;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -67,11 +68,12 @@ public class Make_diary_Activity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private Context context = this;
 
+    String UID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_make_diary_ );
-
 
         Intent get_intent = getIntent();
         final String Login_ID = get_intent.getExtras().getString( "id" );
@@ -92,7 +94,7 @@ public class Make_diary_Activity extends AppCompatActivity {
             }
         } );
 
-        final String UID = firebaseUser.getUid();
+        UID = firebaseUser.getUid();
 
         //Get Nickname
         if (TextUtils.isEmpty( firebaseUser.getDisplayName() )) {
@@ -238,9 +240,11 @@ public class Make_diary_Activity extends AppCompatActivity {
                     Toast.makeText( context, " 클립보드에 코드가 복사되었습니다.", Toast.LENGTH_SHORT ).show();
 
                 } else if (id == R.id.action_settings2) {
+                    firebaseAuth.signOut();
                     Toast.makeText( context, " 로그아웃 되었습니다.", Toast.LENGTH_SHORT ).show();
                     Intent intent = new Intent( Make_diary_Activity.this, Login.class );
                     startActivity( intent );
+                    finish();
 
                 } else if (id == R.id.action_settings3) {
                     Toast.makeText( context, " 이용약관은 없는데ㅎ ", Toast.LENGTH_SHORT ).show();
@@ -278,8 +282,9 @@ public class Make_diary_Activity extends AppCompatActivity {
             if (resultCode == 11) {
                 if (data.getExtras() != null) {
                     ArrayList < String > grouplist = data.getStringArrayListExtra( "grouplist" );
+                    ArrayList < String > groupkey = data.getStringArrayListExtra( "groupkey" );
                     ArrayList < String > parsegroup = parsegrouplist( grouplist );
-                    printscreen( parsegroup );
+                    printscreen( parsegroup);
                 }
 
             }
@@ -304,8 +309,9 @@ public class Make_diary_Activity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
         listview.setLayoutManager( layoutManager );
 
-        adapter = new MyAdapter( this, grouplist, onClickItem );
+        adapter = new MyAdapter( this, grouplist, onClickItem);
         listview.setAdapter( adapter );
+
 
         MyListDecoration decoration = new MyListDecoration();
         listview.addItemDecoration( decoration );
@@ -318,6 +324,7 @@ public class Make_diary_Activity extends AppCompatActivity {
             Intent intent = new Intent( Make_diary_Activity.this, Main_Screen.class );
             intent.putExtra("cur_User",firebaseUser.getDisplayName());
             intent.putExtra("cur_Group", groupname);
+            intent.putExtra("cur_UID",UID);
             startActivity(intent);
         }
     };
@@ -352,9 +359,8 @@ public class Make_diary_Activity extends AppCompatActivity {
             time = System.currentTimeMillis();
             Toast.makeText( getApplicationContext(), "뒤로 버튼을 한번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT ).show();
         } else if (System.currentTimeMillis() - time < 2000) {
+            firebaseAuth.signOut();
             finish();
-
-
         }
     }
 
@@ -403,6 +409,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                 super( itemView );
 
                 textview = itemView.findViewById( R.id.Diary_Title );
+
             }
         }
     }

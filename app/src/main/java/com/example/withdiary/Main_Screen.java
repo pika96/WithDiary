@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,9 +45,12 @@ public class Main_Screen extends AppCompatActivity {
 
     public static final int Main_Screen_CODE = 1;
     ArrayList<datalist> data_list;
+    ArrayList<String> key;
     RecyclerAdapter recyclerAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     String cur_User;
+    String cur_UID;
+    String groupkey;
     public String cur_Group;
     Toolbar myToolbar;
     RecyclerView recyclerView;
@@ -63,6 +67,9 @@ public class Main_Screen extends AppCompatActivity {
         Intent get_Intent = getIntent();
         cur_User = get_Intent.getExtras().getString("cur_User");
         cur_Group = get_Intent.getExtras().getString("cur_Group");
+        cur_UID = get_Intent.getExtras().getString("cur_UID");
+        //groupkey = get_Intent.getExtras().getString("key");
+
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar2);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle(cur_Group);
@@ -113,8 +120,8 @@ public class Main_Screen extends AppCompatActivity {
 
     private void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("일기장을 삭제하시겠습니까?");
-        builder.setMessage("진짜로 삭제됩니다");
+        builder.setTitle("일기장을 탈퇴하시겠습니까?");
+        builder.setMessage("진짜로 탈퇴됩니다");
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -146,7 +153,7 @@ public class Main_Screen extends AppCompatActivity {
         layoutManager.setReverseLayout( true );//최근 글 부터 보이게 역순 출력
         layoutManager.setStackFromEnd( true );//최근 글 부터 보이게 역순 출력
         recyclerView.setLayoutManager(layoutManager);
-        recyclerAdapter = new RecyclerAdapter(data_list,this, cur_Group);
+        recyclerAdapter = new RecyclerAdapter(data_list,this, cur_Group, key);
         recyclerView.setAdapter(recyclerAdapter);
 
 
@@ -181,6 +188,8 @@ public class Main_Screen extends AppCompatActivity {
             if(resultCode == 11) {
                 if (data.getExtras() != null) {
                     data_list = data.getExtras().getParcelableArrayList("data");
+                    key = data.getStringArrayListExtra( "key" );
+                    Log.d("test", key.get(0));
                 }
                 printscreen();
             }
@@ -194,15 +203,17 @@ public class Main_Screen extends AppCompatActivity {
         private ArrayList<datalist> list_data;
         private Context context;
         String curGroup;
+        ArrayList<String> key_list;
 
         private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
 
 
-        public RecyclerAdapter(ArrayList <datalist> list_data, Context context, String curGroup) {
+        public RecyclerAdapter(ArrayList <datalist> list_data, Context context, String curGroup, ArrayList<String> key_list) {
             this.list_data = list_data;
             this.context = context;
             this.curGroup = curGroup;
+            this.key_list = key_list;
 
         }
 
@@ -227,6 +238,7 @@ public class Main_Screen extends AppCompatActivity {
             holder.diarytext = list_data.get(position).getDiarytext();
             holder.imagepath = list_data.get(position).getImagepath();
             holder.writeUser.setText(list_data.get(position).getWriteUser());
+            holder.key = key_list.get(position);
 
 
             StorageReference storageReference = firebaseStorage.getReference().child(holder.imagepath);
@@ -276,6 +288,7 @@ public class Main_Screen extends AppCompatActivity {
 
              String imagepath;
              ImageView imageview;
+             String key;
 
             public ItemViewHolder(@NonNull View itemView){
 
@@ -302,6 +315,8 @@ public class Main_Screen extends AppCompatActivity {
                         intent.putExtra("title", title);
                         intent.putExtra( "diary", diary);
                         intent.putExtra("imagepath", imagepath);
+                        intent.putExtra("curGroup",curGroup);
+                        intent.putExtra("key",key);
 
                         ((Activity) context).startActivity(intent);
 

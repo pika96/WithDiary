@@ -49,6 +49,7 @@ public class DB extends AppCompatActivity {
     public static final int Group_Create_CODE = 3;
     public static final int User_Info_DB = 4;
     public static final int get_Grouplist = 5;
+    public static final int delete_DIARY_CODE = 6;
 
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
@@ -65,6 +66,8 @@ public class DB extends AppCompatActivity {
     ArrayList<datalist> data_list;
     ArrayList<String> group_list;
     ArrayList<String> UID_list;
+    ArrayList<String> diary_key;
+    ArrayList<String> group_key;
 
     private Uri filePath;
     ProgressDialog progressDialog;
@@ -78,6 +81,8 @@ public class DB extends AppCompatActivity {
         data_list = new ArrayList<>();
         group_list = new ArrayList<>();
         UID_list = new ArrayList<>();
+        diary_key = new ArrayList<>();
+        group_key = new ArrayList<>();
 
         final Intent get_intent = getIntent();
         int CODE = get_intent.getExtras().getInt("CODE");
@@ -118,14 +123,19 @@ public class DB extends AppCompatActivity {
                         data_list.clear();
 
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
                             datalist datalist = snapshot.getValue(datalist.class);
+                            String key = snapshot.getKey();
+
                             data_list.add(datalist);
+                            diary_key.add(key);
                         }
 
                         Intent send_intent = new Intent();
                         Bundle bundle = new Bundle();
                         bundle.putParcelableArrayList("data", data_list);
                         send_intent.putExtras(bundle);
+                        send_intent.putStringArrayListExtra("key", diary_key);
                         setResult(11, send_intent);
                         finish();
                     }
@@ -162,7 +172,7 @@ public class DB extends AppCompatActivity {
                         });
                 break;
 
-            case Group_Create_CODE :
+            case Group_Create_CODE:
 
                 String Diary_Title = get_intent.getExtras().getString("Diary_Title");
                 UID_list = get_intent.getStringArrayListExtra("UID");
@@ -180,7 +190,7 @@ public class DB extends AppCompatActivity {
                 finish();
 
 
-            case User_Info_DB :
+            case User_Info_DB:
                 String ID = get_intent.getExtras().getString("ID");
                 String Name = get_intent.getExtras().getString("Name");
                 String cur_UID = get_intent.getExtras().getString("UID");
@@ -196,7 +206,7 @@ public class DB extends AppCompatActivity {
 
                 finish();
 
-            case get_Grouplist :
+            case get_Grouplist:
 
                 String for_grouplist_UID = get_intent.getExtras().getString("UID");
                 DBPath = "User/" + for_grouplist_UID + "/Group/";
@@ -209,11 +219,15 @@ public class DB extends AppCompatActivity {
                         group_list.clear();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             String group = snapshot.getValue(String.class);
+                            String key = snapshot.getKey();
+
                             group_list.add(group);
+                            group_key.add(key);
                         }
 
                         Intent grouplist_intent = new Intent();
                         grouplist_intent.putStringArrayListExtra("grouplist", group_list);
+                        grouplist_intent.putStringArrayListExtra("groupkey", group_key);
                         setResult(11, grouplist_intent);
                         finish();
 
@@ -223,6 +237,19 @@ public class DB extends AppCompatActivity {
 
                     }
                 });
+                break;
+
+            case delete_DIARY_CODE:
+
+                String curGroup = get_intent.getExtras().getString("curGroup");
+                String key = get_intent.getExtras().getString("key");
+
+                DBPath = "Group/" + curGroup + "/" + key + "/";
+
+                databaseReference = firebaseDatabase.getReference(DBPath);
+                databaseReference.removeValue();
+                finish();
+                break;
 
         }
 

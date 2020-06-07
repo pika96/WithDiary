@@ -2,6 +2,7 @@ package com.example.withdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +50,7 @@ public class Login extends AppCompatActivity{
                 Intent Access_Auth = new Intent(Login.this, Make_diary_Activity.class);
                 Access_Auth.putExtra("id",ID);
                 Access_Auth.putExtra("pw",PW);
+
 
                 startActivityForResult(Access_Auth,20);
             }
