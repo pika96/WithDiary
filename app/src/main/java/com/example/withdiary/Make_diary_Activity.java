@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class Make_diary_Activity extends AppCompatActivity {
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
     Button button;
+
     private DrawerLayout mDrawerLayout;
     private Context context = this;
 
@@ -308,26 +310,27 @@ public class Make_diary_Activity extends AppCompatActivity {
         listview = findViewById( R.id.make_diary_listView );
         LinearLayoutManager layoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
         listview.setLayoutManager( layoutManager );
-
-        adapter = new MyAdapter( this, grouplist, onClickItem);
+        adapter = new MyAdapter( this, grouplist);
         listview.setAdapter( adapter );
-
-
         MyListDecoration decoration = new MyListDecoration();
         listview.addItemDecoration( decoration );
+        adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                TextView c = (TextView) v.findViewById(R.id.Diary_Title);
+                String groupname = c.getText().toString();
+                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent( Make_diary_Activity.this, Main_Screen.class );
+                intent.putExtra("cur_User",firebaseUser.getDisplayName());
+                intent.putExtra("cur_Group", groupname);
+                intent.putExtra("cur_UID",UID);
+                startActivity(intent);
+            }
+        }) ;
+
     }
 
-    private View.OnClickListener onClickItem = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String groupname = (String) v.getTag();
-            Intent intent = new Intent( Make_diary_Activity.this, Main_Screen.class );
-            intent.putExtra("cur_User",firebaseUser.getDisplayName());
-            intent.putExtra("cur_Group", groupname);
-            intent.putExtra("cur_UID",UID);
-            startActivity(intent);
-        }
-    };
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -364,35 +367,42 @@ public class Make_diary_Activity extends AppCompatActivity {
         }
     }
 
-    class MyAdapter extends RecyclerView.Adapter < MyAdapter.ViewHolder > {
+    static class MyAdapter extends RecyclerView.Adapter < MyAdapter.ViewHolder > {
 
         private ArrayList < String > itemList;
         private Context context;
-        private View.OnClickListener onClickItem;
+        //private View.OnClickListener onClickItem;
 
-        public MyAdapter(Context context, ArrayList < String > itemList, View.OnClickListener onClickItem) {
+        public interface OnItemClickListener {
+            void onItemClick(View v, int position) ;
+        }
+
+        private OnItemClickListener mListener = null ;
+
+
+        public void setOnItemClickListener(OnItemClickListener listener) {
+            this.mListener = listener ;
+        }
+        public MyAdapter(Context context, ArrayList < String > itemList) {
             this.context = context;
             this.itemList = itemList;
-            this.onClickItem = onClickItem;
+
         }
 
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-
             View view = LayoutInflater.from( context ).inflate( R.layout.make_diary_item, parent, false );
-
             return new ViewHolder( view );
+
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             String item = itemList.get( position );
-
             holder.textview.setText( item );
             holder.textview.setTag( item );
-            holder.textview.setOnClickListener( onClickItem );
+
         }
 
         @Override
@@ -408,9 +418,23 @@ public class Make_diary_Activity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super( itemView );
 
-                textview = itemView.findViewById( R.id.Diary_Title );
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos = getAdapterPosition() ;
+                        if (pos != RecyclerView.NO_POSITION) {
+                            if (mListener != null) {
+                                mListener.onItemClick(v, pos) ;
+                            }
+                        }
+
+
+                    }
+                });
 
             }
+
+
         }
     }
 
