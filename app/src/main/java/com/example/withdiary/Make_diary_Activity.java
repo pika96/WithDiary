@@ -263,6 +263,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
             @Override
             public void onRefresh() {
+                getGrouplist(UID);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
