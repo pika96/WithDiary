@@ -98,7 +98,7 @@ public class Select_Diary extends AppCompatActivity {
                         intent.putExtra("curGroup", curGroup);
                         intent.putExtra("key",key);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(),"예",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });

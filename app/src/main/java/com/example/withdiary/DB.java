@@ -50,6 +50,7 @@ public class DB extends AppCompatActivity {
     public static final int User_Info_DB = 4;
     public static final int get_Grouplist = 5;
     public static final int delete_DIARY_CODE = 6;
+    public static final int delete_GROUP_CODE = 7;
 
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
@@ -245,6 +246,18 @@ public class DB extends AppCompatActivity {
                 String key = get_intent.getExtras().getString("key");
 
                 DBPath = "Group/" + curGroup + "/" + key + "/";
+
+                databaseReference = firebaseDatabase.getReference(DBPath);
+                databaseReference.removeValue();
+                finish();
+                break;
+
+            case delete_GROUP_CODE:
+
+                String curUID = get_intent.getExtras().getString("curUID");
+                String groupkey = get_intent.getExtras().getString("key");
+
+                DBPath = "User/" + curUID + "/Group/" + groupkey + "/";
 
                 databaseReference = firebaseDatabase.getReference(DBPath);
                 databaseReference.removeValue();

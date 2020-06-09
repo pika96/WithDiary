@@ -39,11 +39,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 public class Main_Screen extends AppCompatActivity {
 
     public static final int Main_Screen_CODE = 1;
+    public static final int delete_GROUP_CODE = 7;
     ArrayList<datalist> data_list;
     ArrayList<String> key;
     RecyclerAdapter recyclerAdapter;
@@ -68,7 +67,7 @@ public class Main_Screen extends AppCompatActivity {
         cur_User = get_Intent.getExtras().getString("cur_User");
         cur_Group = get_Intent.getExtras().getString("cur_Group");
         cur_UID = get_Intent.getExtras().getString("cur_UID");
-        //groupkey = get_Intent.getExtras().getString("key");
+        groupkey = get_Intent.getExtras().getString("key");
 
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar2);
         setSupportActionBar(myToolbar);
@@ -78,8 +77,7 @@ public class Main_Screen extends AppCompatActivity {
         emptyView=findViewById( R.id.empty_text );
         notemptyView=findViewById( R.id.not_empty_image );
         get_DB();
-
-
+        Log.d("key", groupkey);
 
 
         //Write Diary
@@ -125,7 +123,13 @@ public class Main_Screen extends AppCompatActivity {
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"예",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Main_Screen.this, DB.class);
+                        intent.putExtra("CODE", delete_GROUP_CODE);
+                        intent.putExtra("curUID", cur_UID);
+                        intent.putExtra("key", groupkey);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(),"탈퇴되었습니다.",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
         builder.setNegativeButton("아니오",

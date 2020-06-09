@@ -286,7 +286,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                     ArrayList < String > grouplist = data.getStringArrayListExtra( "grouplist" );
                     ArrayList < String > groupkey = data.getStringArrayListExtra( "groupkey" );
                     ArrayList < String > parsegroup = parsegrouplist( grouplist );
-                    printscreen( parsegroup);
+                    printscreen(parsegroup, groupkey);
                 }
 
             }
@@ -305,7 +305,7 @@ public class Make_diary_Activity extends AppCompatActivity {
         return result;
     }
 
-    private void printscreen(ArrayList < String > grouplist) {
+    private void printscreen(ArrayList < String > grouplist, final ArrayList<String> groupkey) {
 
         listview = findViewById( R.id.make_diary_listView );
         LinearLayoutManager layoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
@@ -320,11 +320,12 @@ public class Make_diary_Activity extends AppCompatActivity {
 
                 TextView c = (TextView) v.findViewById(R.id.Diary_Title);
                 String groupname = c.getText().toString();
-                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
+                String key = groupkey.get(position);
                 Intent intent = new Intent( Make_diary_Activity.this, Main_Screen.class );
                 intent.putExtra("cur_User",firebaseUser.getDisplayName());
                 intent.putExtra("cur_Group", groupname);
                 intent.putExtra("cur_UID",UID);
+                intent.putExtra("key", key);
                 startActivity(intent);
             }
         }) ;
