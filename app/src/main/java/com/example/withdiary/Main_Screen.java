@@ -189,7 +189,7 @@ public class Main_Screen extends AppCompatActivity {
                 if (data.getExtras() != null) {
                     data_list = data.getExtras().getParcelableArrayList("data");
                     key = data.getStringArrayListExtra( "key" );
-                    Log.d("test", key.get(0));
+                    //Log.d("test", key.get(0));
                 }
                 printscreen();
             }

@@ -401,7 +401,6 @@ public class Make_diary_Activity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             String item = itemList.get( position );
             holder.textview.setText( item );
-            holder.textview.setTag( item );
 
         }
 
@@ -417,7 +416,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
             public ViewHolder(View itemView) {
                 super( itemView );
-
+                textview = itemView.findViewById( R.id.Diary_Title );
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
