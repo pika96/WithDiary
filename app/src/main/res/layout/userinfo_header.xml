@@ -3,26 +3,60 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/babyPink"
+    android:background="@color/Silver"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin">
-
-    <ImageView
-        android:id="@+id/smile"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:srcCompat="@drawable/smile" />
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:weightSum="4">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        tools:weightSum="5">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/goyang"
+            android:text="Profile"
+            android:textSize="36sp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/header" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            app:srcCompat="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <TextView
@@ -30,60 +64,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="닉네임 : "
-            android:textColor="@color/Black"
-            android:textSize="20sp" />
+            android:fontFamily="@font/goyang"
+            android:text="☆"
+            android:textColor="@color/babyPink"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/User_Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/goyang"
             android:text="tmp_nickName"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/Email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이메일 : "
-            android:textColor="@color/Black"
-            android:textSize="20sp" />
+            android:fontFamily="@font/goyang"
+            android:text="☆"
+            android:textColor="@color/babyGreen"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/User_mail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/goyang"
             android:text="tmp_mail"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/UID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="초대코드:"
-            android:textColor="@color/Black"
-            android:textSize="20sp" />
+            android:fontFamily="@font/goyang"
+            android:text="☆"
+            android:textColor="@color/babySky"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/User_UID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/goyang"
             android:text="tmp_UID"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 
 import android.app.Activity;
@@ -22,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -36,6 +38,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,10 +76,12 @@ public class Make_diary_Activity extends AppCompatActivity {
 
     String UID;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_make_diary_ );
+
 
         Intent get_intent = getIntent();
         final String Login_ID = get_intent.getExtras().getString( "id" );
@@ -103,31 +109,32 @@ public class Make_diary_Activity extends AppCompatActivity {
 
             final EditText InputName = new EditText( Make_diary_Activity.this );
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
-            params.leftMargin = getResources().getDimensionPixelSize( R.dimen.dialog_margin );
-            params.rightMargin = getResources().getDimensionPixelSize( R.dimen.dialog_margin );
-            AlertDialog.Builder getNameDialog = new AlertDialog.Builder( this, R.style.MyAlertDialogStyle );
-            getNameDialog.setTitle( "닉네임 입력" ).setMessage( "일기장에서 사용할 닉네임을 입력해주세요!" );
+            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            AlertDialog.Builder getNameDialog = new AlertDialog.Builder( context, R.style.MyAlertDialogStyle );
+            getNameDialog.setTitle( "닉네임입력" ).setMessage( "일기장에서 사용할 닉네임을 입력해주세요! (한글 2~8자)" );
             InputName.setLayoutParams( params );
             InputName.setSingleLine( true );
             getNameDialog.setView( InputName );
             getNameDialog.setCancelable( false );
-            InputName.setTextColor( Color.WHITE );
+
+
             InputName.addTextChangedListener( new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                    if (InputName.getText().toString().length() >= 2 && InputName.getText().toString().length() <= 8) {
+                        button.setEnabled(true);
+                        InputName.setTextColor( Color.GRAY);
+                    } else {
+                        InputName.setTextColor(Color.RED );
+                        button.setEnabled(false);
+                    }
                 }
 
                 @Override
 
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (InputName.getText().toString().length() >= 2 && InputName.getText().toString().length() <= 8) {
-                        button.setEnabled( true );
-                        InputName.setTextColor( Color.RED );
-                    } else {
-                        button.setEnabled( false );
-                        InputName.setTextColor( Color.BLUE );
-                    }
+
                 }
 
                 @Override
@@ -194,7 +201,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         getGrouplist( UID );
 
-        Button diary_add_btn = findViewById( R.id.make_new_diary_btn );
+        ImageButton diary_add_btn = findViewById( R.id.make_new_diary_btn );
         diary_add_btn.setOnClickListener( new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent( Make_diary_Activity.this, make_new_diary.class );
@@ -210,7 +217,7 @@ public class Make_diary_Activity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById( R.id.drawer_layout );
         getSupportActionBar().setDisplayShowTitleEnabled( false );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        getSupportActionBar().setHomeAsUpIndicator( R.drawable.flowermdpi );
+        getSupportActionBar().setHomeAsUpIndicator( R.drawable.menu);
         NavigationView navigationView = (NavigationView) findViewById( R.id.nav_view );
         navigationView.bringToFront();
         //View header = navigationView.getHeaderView(0);
@@ -258,6 +265,8 @@ public class Make_diary_Activity extends AppCompatActivity {
 
 
         } );
+
+
         swipeRefreshLayout=findViewById( R.id.swipe2 );
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -309,12 +318,15 @@ public class Make_diary_Activity extends AppCompatActivity {
     private void printscreen(ArrayList < String > grouplist, final ArrayList<String> groupkey) {
 
         listview = findViewById( R.id.make_diary_listView );
+        MyListDecoration decoration = new MyListDecoration();
         LinearLayoutManager layoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
         listview.setLayoutManager( layoutManager );
         adapter = new MyAdapter( this, grouplist);
+
         listview.setAdapter( adapter );
-        MyListDecoration decoration = new MyListDecoration();
         listview.addItemDecoration( decoration );
+
+
         adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -408,7 +420,12 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
+            if (itemList == null) {
+                return 0;
+            }
+
             return itemList.size();
+
         }
 
 
@@ -445,7 +462,7 @@ public class Make_diary_Activity extends AppCompatActivity {
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
 
             if (parent.getChildAdapterPosition( view ) != parent.getAdapter().getItemCount() - 1) {
-                outRect.right = 30;
+                //outRect.right = 30;
             }
         }
 

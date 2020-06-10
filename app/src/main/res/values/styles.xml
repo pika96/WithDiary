@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/goyang</item>
     </style>
 
 
@@ -13,11 +14,18 @@
 
         <!-- Base application theme. -->
 
-        <style name="MyAlertDialogStyle" parent="@style/Theme.AppCompat.Dialog.Alert">
+        <style name="MyAlertDialogStyle" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
 
             <item name="android:textColor">@color/babyPink</item>
-            <item name="android:typeface">monospace</item>
-            <item name="android:background">@color/six_gray</item>
+            <item name="android:fontFamily">@font/goyang</item>
+            <item name="android:background">@color/white</item>
+
 
         </style>
+
+    <style name="goyangTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/goyang</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>

@@ -35,6 +35,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,7 +56,7 @@ public class Main_Screen extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageView emptyView;
     ImageView notemptyView;
-    int[] image = {R.drawable.flower3_2, R.drawable.phrase1, R.drawable.phrase2, R.drawable.phrase3, R.drawable.phrase4, R.drawable.phrase5};
+    int[] image = { R.drawable.phrase2,R.drawable.phrase3, R.drawable.phrase4, R.drawable.phrase5,R.drawable.phrase6, R.drawable.phrase7, R.drawable.phrase8, R.drawable.phrase9,R.drawable.phrase10, R.drawable.phrase11, R.drawable.phrase12, R.drawable.phrase13,R.drawable.phrase14, R.drawable.phrase15, R.drawable.phrase16, R.drawable.phrase17,R.drawable.phrase18};
 
 
     @Override

@@ -3,6 +3,7 @@ package com.example.withdiary;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,8 @@ public class Select_Diary extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.select_diary);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_Diary);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar3);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("");
@@ -105,7 +109,7 @@ public class Select_Diary extends AppCompatActivity {
         builder.setNegativeButton("아니오",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"아니오",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"삭제되지 않았습니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
         builder.show();

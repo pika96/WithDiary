@@ -28,15 +28,19 @@
             <TextView
                 android:id="@+id/Diary_Title"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="400dp"
                 android:layout_weight="0"
-                android:background="@drawable/diary_samplemdpi"
-                android:fontFamily="@font/inkkor"
+                android:background="@drawable/diarygradient"
+                android:fontFamily="@font/goyang"
+                android:paddingLeft="30dp"
                 android:paddingTop="70dp"
-                android:text="Name"
+                android:paddingRight="55dp"
+                android:paddingBottom="20dp"
+                android:text="안녕"
                 android:textAlignment="center"
-                android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textDirection="rtl"
+                android:textSize="36sp"
+                android:textStyle="italic" />
         </LinearLayout>
     </FrameLayout>
 
