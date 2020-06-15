@@ -18,6 +18,7 @@ public class make_new_diary extends AppCompatActivity {
 
     public static final int Group_Create_CODE = 3;
     int count = 1 ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -88,7 +89,7 @@ public class make_new_diary extends AppCompatActivity {
                     count++;
                 }
                 else {
-                    Toast.makeText( make_new_diary.this,  " 사람을 더 추가할 수 없습니다.", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( make_new_diary.this,  " 더 이상 사람을 추가할 수 없습니다.", Toast.LENGTH_SHORT ).show();
 
                 }
             }
@@ -111,7 +112,7 @@ public class make_new_diary extends AppCompatActivity {
                     count--;
                 }
                 else {
-                    Toast.makeText( make_new_diary.this,  "님 친구 없음?", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( make_new_diary.this,  "더 이상 삭제할 수 없습니다.", Toast.LENGTH_SHORT ).show();
 
                 }
             }

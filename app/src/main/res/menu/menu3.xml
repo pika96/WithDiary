@@ -8,8 +8,4 @@
         android:title="삭제"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/action_change"
-        android:title="수정"
-        app:showAsAction="never"/>
-
 </menu>

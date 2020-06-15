@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -33,10 +36,15 @@ public class Select_Diary extends AppCompatActivity {
     Toolbar myToolbar;
     String key;
     String curGroup;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.select_diary);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
         ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_Diary);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar3);
@@ -46,7 +54,8 @@ public class Select_Diary extends AppCompatActivity {
         TextView tx2 = findViewById(R.id.Read_date);
         TextView tx3 = findViewById(R.id.Read_Content);
         final ImageView Read_imageview = findViewById(R.id.Read_image);
-        
+
+
         Intent intent = getIntent();
         String diarytext= intent.getExtras().getString( "diary" );
         tx3.setText( diarytext );
@@ -57,10 +66,19 @@ public class Select_Diary extends AppCompatActivity {
 
         String imagepath = intent.getExtras().getString("imagepath");
         curGroup = intent.getExtras().getString("curGroup");
+        String writeUID = intent.getExtras().getString("writeUID");
         key = intent.getExtras().getString("key");
-
         StorageReference storageReference = firebaseStorage.getReference().child(imagepath);
 
+        String curuid = firebaseUser.getUid();
+
+        //curuid와 writeUID비교해서 다르면(일기 작성자와 현재 사용자가 다름) 툴바 없어지게 같으면(일기 작성자와 현재 사용자가 같음) 툴바 보이게 만들어주세요
+        //밑에 코드 안됨 ㅠㅠ
+        /*if(writeUID.equals(curuid)){
+            myToolbar.setVisibility(View.INVISIBLE);
+        }else {
+            myToolbar.setVisibility(View.VISIBLE);
+        }*/
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
@@ -81,9 +99,6 @@ public class Select_Diary extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.action_delete:
                 show();
-                break;
-            case R.id.action_change:
-                Toast.makeText(this, "일기 수정",Toast.LENGTH_SHORT).show();
                 break;
         }
         return true;

@@ -133,6 +133,7 @@
                     android:layout_weight="1"
                     android:background="@color/fui_transparent"
                     android:fontFamily="@font/goyang"
+                    android:onClick="Login_Btn_Click"
                     android:text="Login"
                     android:textAlignment="center"
                     android:textColor="@color/babyPurple"

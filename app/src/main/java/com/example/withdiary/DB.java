@@ -63,6 +63,7 @@ public class DB extends AppCompatActivity {
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
     private FirebaseAuth firebaseAuth  = FirebaseAuth.getInstance();
+    private FirebaseUser firebaseUser;
 
     ArrayList<datalist> data_list;
     ArrayList<String> group_list;
@@ -78,6 +79,8 @@ public class DB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         String cur_groupname;
+
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         data_list = new ArrayList<>();
         group_list = new ArrayList<>();
@@ -102,7 +105,7 @@ public class DB extends AppCompatActivity {
                 String Imagepath = cur_groupname + "/" + Date + "/" + Title + ".png";
                 filePath = Uri.parse(strUri);
 
-                datalist tmp_datalist = new datalist(writeUser, Date, Title, Diary, Imagepath);
+                datalist tmp_datalist = new datalist(writeUser, Date, Title, Diary, Imagepath, firebaseUser.getUid());
 
                 DBPath = "Group/" + cur_groupname + "/";
                 databaseReference = firebaseDatabase.getReference(DBPath);

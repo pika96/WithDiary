@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -51,6 +52,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.Exclude;
 
 import org.w3c.dom.Text;
 
@@ -64,8 +66,10 @@ public class Make_diary_Activity extends AppCompatActivity {
     private RecyclerView listview;
     private MyAdapter adapter;
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+    private FirebaseAuth firebaseAuth;
+    //private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseUser firebaseUser;
+    //private FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
     public static final int Return_OK = 100;
     public static final int Return_fail = 200;
@@ -82,27 +86,8 @@ public class Make_diary_Activity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_make_diary_ );
 
-
-        Intent get_intent = getIntent();
-        final String Login_ID = get_intent.getExtras().getString( "id" );
-        String Login_PW = get_intent.getExtras().getString( "pw" );
-
-        firebaseAuth.signInWithEmailAndPassword( Login_ID, Login_PW ).addOnCompleteListener( this, new OnCompleteListener < AuthResult >() {
-            @Override
-            public void onComplete(@NonNull Task < AuthResult > task) {
-
-                Intent send_intent = new Intent();
-                if (task.isSuccessful()) {
-                    Toast.makeText( Make_diary_Activity.this, "로그인 성공.", Toast.LENGTH_SHORT ).show();
-                    setResult( Return_OK, send_intent );
-                } else {
-                    setResult( Return_fail, send_intent );
-                    finish();
-                }
-            }
-        } );
-
-        UID = firebaseUser.getUid();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         //Get Nickname
         if (TextUtils.isEmpty( firebaseUser.getDisplayName() )) {
@@ -160,7 +145,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Intent intent = new Intent( Make_diary_Activity.this, DB.class );
                                     intent.putExtra( "CODE", User_Info_DB );
-                                    intent.putExtra( "ID", Login_ID );
+                                    intent.putExtra( "ID", firebaseUser.getEmail() );
                                     intent.putExtra( "Name", name );
                                     intent.putExtra( "UID", UID );
                                     startActivity( intent );
@@ -196,6 +181,7 @@ public class Make_diary_Activity extends AppCompatActivity {
 
         }
 
+        UID = firebaseUser.getUid();
         setContentView( R.layout.activity_make_diary_ );
 
 
@@ -230,7 +216,7 @@ public class Make_diary_Activity extends AppCompatActivity {
         //TextView UserInfo_UID = findViewById(R.id.User_UID);
 
         UserInfo_Name.setText( firebaseUser.getDisplayName() );
-        UserInfo_Email.setText( Login_ID );
+        UserInfo_Email.setText( firebaseUser.getEmail() );
         UserInfo_UID.setText( firebaseUser.getUid() );
 
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
@@ -256,7 +242,7 @@ public class Make_diary_Activity extends AppCompatActivity {
                     finish();
 
                 } else if (id == R.id.action_settings3) {
-                    Toast.makeText( context, " 이용약관은 없는데ㅎ ", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( context, "Create by 지우 현민", Toast.LENGTH_SHORT ).show();
 
                 }
 

@@ -12,16 +12,18 @@ public class datalist implements Parcelable {
     String datetext;
     String diarytext;
     String imagepath;
+    String writeUID;
 
     public datalist() {
     }
 
-    public datalist(String writeUser, String datetext, String titletext, String diarytext, String imagepath) {
+    public datalist(String writeUser, String datetext, String titletext, String diarytext, String imagepath, String writeUID) {
         this.writeUser = writeUser; //작성한 유저
         this.datetext = datetext; //일기 날짜
         this.titletext = titletext; //일기 제목
         this.diarytext = diarytext; //일기 내용
         this.imagepath = imagepath;//사진
+        this.writeUID = writeUID; //작성한 유저 UID
     }
 
     protected datalist(Parcel in) {
@@ -30,6 +32,7 @@ public class datalist implements Parcelable {
         this.titletext=in.readString();
         this.diarytext=in.readString();
         this.imagepath=in.readString();
+        this.writeUID=in.readString();
     }
 
     //Alt+insert를 누르면 get/set 자동으로 생성된다
@@ -49,6 +52,8 @@ public class datalist implements Parcelable {
     }
 
     public String getImagepath() { return imagepath; }
+
+    public String getWriteUID() { return writeUID; }
 
 
     public void setDatetext(String date) {
@@ -70,6 +75,7 @@ public class datalist implements Parcelable {
     }
 
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,9 +88,7 @@ public class datalist implements Parcelable {
         parcel.writeString(this.titletext );
         parcel.writeString(this.diarytext );
         parcel.writeString(this.imagepath) ;
-
-
-
+        parcel.writeString(this.writeUID);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

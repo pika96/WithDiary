@@ -243,6 +243,7 @@ public class Main_Screen extends AppCompatActivity {
             holder.diarytext = list_data.get(position).getDiarytext();
             holder.imagepath = list_data.get(position).getImagepath();
             holder.writeUser.setText(list_data.get(position).getWriteUser());
+            holder.writeUID = list_data.get(position).getWriteUID();
             holder.key = key_list.get(position);
 
 
@@ -290,7 +291,7 @@ public class Main_Screen extends AppCompatActivity {
              TextView titletext;
              String diarytext;
              TextView writeUser;
-
+             String writeUID;
              String imagepath;
              ImageView imageview;
              String key;
@@ -321,6 +322,7 @@ public class Main_Screen extends AppCompatActivity {
                         intent.putExtra( "diary", diary);
                         intent.putExtra("imagepath", imagepath);
                         intent.putExtra("curGroup",curGroup);
+                        intent.putExtra("writeUID",writeUID);
                         intent.putExtra("key",key);
 
                         ((Activity) context).startActivity(intent);
