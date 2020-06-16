@@ -72,13 +72,13 @@ public class Select_Diary extends AppCompatActivity {
 
         String curuid = firebaseUser.getUid();
 
-        //curuid와 writeUID비교해서 다르면(일기 작성자와 현재 사용자가 다름) 툴바 없어지게 같으면(일기 작성자와 현재 사용자가 같음) 툴바 보이게 만들어주세요
-        //밑에 코드 안됨 ㅠㅠ
-        /*if(writeUID.equals(curuid)){
-            myToolbar.setVisibility(View.INVISIBLE);
-        }else {
+
+        if(writeUID.equals(curuid)){
             myToolbar.setVisibility(View.VISIBLE);
-        }*/
+        }else {
+            myToolbar.setVisibility(View.INVISIBLE);
+        }
+
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {

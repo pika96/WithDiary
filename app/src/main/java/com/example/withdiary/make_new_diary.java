@@ -40,7 +40,7 @@ public class make_new_diary extends AppCompatActivity {
             // Do processing Title or Diary nullException
             @Override
             public void onClick(View v) {
-                if(Diary_name_text.getText().toString().length()==0){
+                if(Diary_name_text.getText().toString().isEmpty()){
                     Toast.makeText( make_new_diary.this, "일기장 제목을 입력하세요.", Toast.LENGTH_SHORT ).show();
                 }
                 else if(Diary_name_text.getText().toString().contains( "_" )){

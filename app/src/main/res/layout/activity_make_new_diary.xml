@@ -56,7 +56,7 @@
             android:fontFamily="@font/goyang"
             android:hint="Write Diary Title : ) "
             android:inputType="textPersonName"
-            android:maxLength="30"
+            android:maxLength="15"
             android:textSize="24sp" />
 
         <LinearLayout

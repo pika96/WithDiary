@@ -65,7 +65,7 @@
                     android:ems="10"
                     android:fontFamily="sans-serif-light"
                     android:hint="ID"
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/two_gray"
                     android:textColorHighlight="@color/babyPink"
                     android:textColorHint="@color/two_gray"

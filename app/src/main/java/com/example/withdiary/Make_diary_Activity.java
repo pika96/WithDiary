@@ -107,6 +107,13 @@ public class Make_diary_Activity extends AppCompatActivity {
             InputName.addTextChangedListener( new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                     if (InputName.getText().toString().length() >= 2 && InputName.getText().toString().length() <= 8) {
                         button.setEnabled(true);
                         InputName.setTextColor( Color.GRAY);
@@ -114,12 +121,6 @@ public class Make_diary_Activity extends AppCompatActivity {
                         InputName.setTextColor(Color.RED );
                         button.setEnabled(false);
                     }
-                }
-
-                @Override
-
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 }
 
                 @Override
