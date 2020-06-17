@@ -2,9 +2,7 @@ package com.example.withdiary;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ImageView;
 
-import java.io.Serializable;
 
 public class datalist implements Parcelable {
     String writeUser;

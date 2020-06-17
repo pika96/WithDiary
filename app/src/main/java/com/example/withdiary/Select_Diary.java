@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,7 +32,6 @@ public class Select_Diary extends AppCompatActivity {
 
     public static final int delete_DIARY_CODE = 6;
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    Toolbar myToolbar;
     String key;
     String curGroup;
     private FirebaseAuth firebaseAuth;
@@ -124,7 +122,7 @@ public class Select_Diary extends AppCompatActivity {
         builder.setNegativeButton("아니오",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"삭제되지 않았습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"취소되었습니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
         builder.show();
@@ -133,7 +131,6 @@ public class Select_Diary extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //return super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu3, menu);
         return true;

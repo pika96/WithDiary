@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,7 +33,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -120,7 +117,7 @@ public class Main_Screen extends AppCompatActivity {
     private void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("일기장을 탈퇴하시겠습니까?");
-        builder.setMessage("진짜로 탈퇴됩니다");
+        builder.setMessage("일기장을 더 이상 열어볼 수 없습니다.");
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -330,7 +327,6 @@ public class Main_Screen extends AppCompatActivity {
                     }
                 } );
 
-                //img=itemView.findViewById(R.id.item_imageView);
             }
         }
 

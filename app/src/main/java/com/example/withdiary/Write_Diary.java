@@ -1,31 +1,19 @@
 package com.example.withdiary;
 
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,8 +25,6 @@ public class Write_Diary extends AppCompatActivity {
     private Uri filePath;
     private ImageView imageView;
     public static final int REQUESTCODE = 0;
-    private static final int PICK_FROM_ALBUM = 1;
-    private static final int CROP_FROM_CAMERA = 2;
 
 
     String curUser;
@@ -51,7 +37,6 @@ public class Write_Diary extends AppCompatActivity {
         final EditText Titletext = findViewById(R.id.Diary_title);
         final EditText Diarytext = findViewById(R.id.Diary_input);
 
-        //ImageButton imageButton = findViewById(R.id.Picture);
 
         Intent get_intent = getIntent();
         curUser = get_intent.getExtras().getString("curUser");
@@ -62,18 +47,6 @@ public class Write_Diary extends AppCompatActivity {
             @Override
                 public void onClick(View v) {
                 Crop.pickImage(Write_Diary.this);
-                /*Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                //startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
-
-
-                try{
-                    intent.putExtra( "return-data",true );
-                    startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
-                }catch(ActivityNotFoundException e) {
-
-                }*/
 
 
 
@@ -118,13 +91,6 @@ public class Write_Diary extends AppCompatActivity {
             Uri destinetion = Uri.fromFile( new File(getCacheDir(),"cropped"));
             Crop.of( filePath,destinetion ).asSquare().start(this);
             imageView.setImageURI( Crop.getOutput(data));
-            /*Log.d("MainActivity", "uri:" + String.valueOf(filePath));
-            try{
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-            } catch (IOException e){
-                e.printStackTrace();
-            }*/
         }
             else if (requestCode==Crop.REQUEST_CROP)
             {

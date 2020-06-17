@@ -2,32 +2,25 @@ package com.example.withdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity{
 
-    public static final int Return_OK = 100;
-    public static final int Return_fail = 200;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
 
-    String ID;
-    String PW;
+
     EditText Login_id;
     EditText Login_pw;
 

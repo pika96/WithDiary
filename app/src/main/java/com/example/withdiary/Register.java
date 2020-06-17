@@ -22,7 +22,6 @@ public class Register extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView(R.layout.register);
 
-        //final EditText NameText = findViewById(R.id.register_name_text);
         final EditText IDText = findViewById(R.id.register_id_text);
         final EditText PWText = findViewById(R.id.register_password_text);
         final EditText PW2Text = findViewById(R.id.register_password2_text);
