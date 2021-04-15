@@ -34,12 +34,12 @@ SNS 서비스 중 하나인 인스타그램을 예시로 들면, 사용자가 �
 ### PPT
 [1차 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%201%EC%B0%A8%20ppt.pdf)
 
-[2차 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%202%EC%B0%A8%20ppt.pptx)
+[2차 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%202%EC%B0%A8%20ppt.pdf)
 
 [최종 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%20%EC%B5%9C%EC%A2%85%20ppt.pdf)
 
 ### 보고서
-[최종 보고서]
+[최종 보고서](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%B5%9C%EC%A2%85%20%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf)
 
 <br>
 
