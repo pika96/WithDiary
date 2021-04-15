@@ -32,11 +32,11 @@ SNS 서비스 중 하나인 인스타그램을 예시로 들면, 사용자가 �
 
 ## 발표 자료
 ### PPT
-[1차 ppt]
+[1차 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%201%EC%B0%A8%20ppt.pdf)
 
-[2차 ppt]
+[2차 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%202%EC%B0%A8%20ppt.pptx)
 
-[최종 ppt]
+[최종 ppt](https://github.com/pika96/WithDiary/blob/master/%EB%B0%9C%ED%91%9C%20%EC%9E%90%EB%A3%8C/With%20Diary%20%EC%B5%9C%EC%A2%85%20ppt.pdf)
 
 ### 보고서
 [최종 보고서]
